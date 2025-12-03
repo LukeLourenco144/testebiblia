@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Teste da Bíblia - Quiz</title>
+  <meta name="description" content="Responda 20 perguntas bíblicas e descubra seu nível de conhecimento da Bíblia.">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-950 text-slate-50">
+  <main class="min-h-screen flex items-center justify-center px-4">
+    <div class="w-full max-w-2xl bg-slate-900/80 border border-slate-800 rounded-2xl p-6 shadow-xl shadow-emerald-500/20">
+      <header class="mb-4 flex items-center justify-between gap-4">
+        <div>
+          <h1 class="text-xl md:text-2xl font-bold">Teste da Bíblia</h1>
+          <p class="text-xs md:text-sm text-slate-300">
+            20 perguntas rápidas sobre Antigo e Novo Testamento.
+          </p>
+        </div>
+        <a href="index.html" class="text-xs text-slate-400 hover:text-emerald-300">
+          ⬅ Voltar
+        </a>
+      </header>
+
+      <!-- Progresso -->
+      <div class="mb-4">
+        <div class="flex justify-between text-xs text-slate-400 mb-1">
+          <span id="progress-text">Pergunta 1 de 20</span>
+          <span id="score-preview">Pontuação: 0</span>
+        </div>
+        <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
+          <div id="progress-bar" class="h-2 bg-emerald-500 w-0"></div>
+        </div>
+      </div>
+
+      <!-- Área das perguntas -->
+      <section id="quiz-section">
+        <h2 id="question-text" class="text-base md:text-lg font-semibold mb-4">
+          Carregando pergunta...
+        </h2>
+        <form id="options-form" class="space-y-2 mb-4">
+          <!-- opções serão inseridas via JS -->
+        </form>
+
+        <p id="error-message" class="text-xs text-red-400 mb-2 hidden">
+          Escolha uma alternativa para continuar.
+        </p>
+
+        <div class="flex justify-between items-center mt-2">
+          <button
+            type="button"
+            id="prev-btn"
+            class="px-3 py-2 rounded-xl border border-slate-700 text-xs md:text-sm text-slate-200 hover:border-slate-500 disabled:opacity-30 disabled:cursor-not-allowed">
+            ⬅ Anterior
+          </button>
+
+          <button
+            type="button"
+            id="next-btn"
+            class="px-4 py-2 rounded-xl bg-emerald-500 text-slate-950 font-semibold text-xs md:text-sm hover:bg-emerald-400 transition">
+            Próxima pergunta
+          </button>
+        </div>
+      </section>
+
+      <!-- Resultado -->
+      <section id="result-section" class="hidden">
+        <h2 class="text-xl font-bold mb-2">Seu resultado</h2>
+        <p class="text-sm text-slate-300 mb-4">
+          Veja sua pontuação, nível e áreas para aprofundar.
+        </p>
+
+        <div class="grid md:grid-cols-3 gap-4 mb-4 text-sm">
+          <div class="border border-slate-800 rounded-xl p-3">
+            <p class="text-xs text-slate-400 mb-1">Pontuação</p>
+            <p id="final-score" class="text-2xl font-bold text-emerald-400">0 / 20</p>
+          </div>
+          <div class="border border-slate-800 rounded-xl p-3">
+            <p class="text-xs text-slate-400 mb-1">Aproveitamento</p>
+            <p id="final-percent" class="text-2xl font-bold text-emerald-400">0%</p>
+          </div>
+          <div class="border border-slate-800 rounded-xl p-3">
+            <p class="text-xs text-slate-400 mb-1">Nível</p>
+            <p id="final-level" class="text-base font-semibold text-slate-50">-</p>
+          </div>
+        </div>
+
+        <div class="border border-slate-800 rounded-xl p-3 mb-4 text-sm">
+          <p class="text-xs text-slate-400 mb-1">Diagnóstico rápido</p>
+          <p id="diagnostic-text" class="text-slate-200">
+            Carregando análise...
+          </p>
+        </div>
+
+        <div class="border border-slate-800 rounded-xl p-3 mb-4 text-sm">
+          <p class="text-xs text-slate-400 mb-1">Sugestões de estudo</p>
+          <ul id="study-tips" class="list-disc list-inside text-slate-200 space-y-1"></ul>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-3 mt-4">
+          <button
+            id="retry-btn"
+            class="flex-1 px-4 py-2 rounded-xl bg-emerald-500 text-slate-950 font-semibold text-sm hover:bg-emerald-400 transition">
+            Refazer o teste
+          </button>
+          <a href="index.html"
+             class="flex-1 px-4 py-2 rounded-xl border border-slate-700 text-sm text-slate-200 hover:border-emerald-400 hover:text-emerald-300 text-center flex items-center justify-center">
+            Voltar para a página inicial
+          </a>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
