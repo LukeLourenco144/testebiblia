@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Teste da Bíblia - Descubra quanto você realmente sabe</title>
+  <meta name="description" content="Faça o Teste da Bíblia em 20 perguntas, descubra seu nível de conhecimento bíblico e receba um diagnóstico do que precisa estudar mais. Ideal para cristãos, células e igrejas.">
+  <!-- Tailwind via CDN (pra agilizar o design) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-950 text-slate-50">
+  <!-- Top bar -->
+  <header class="border-b border-slate-800">
+    <div class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-xl bg-emerald-500 flex items-center justify-center font-bold text-slate-950">
+          T
+        </div>
+        <span class="font-semibold text-lg">Teste da Bíblia</span>
+      </div>
+      <nav class="hidden md:flex items-center gap-6 text-sm text-slate-300">
+        <a href="#como-funciona" class="hover:text-emerald-400 transition">Como funciona</a>
+        <a href="#igrejas" class="hover:text-emerald-400 transition">Para igrejas</a>
+        <a href="#contato" class="hover:text-emerald-400 transition">Contato</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <main class="max-w-5xl mx-auto px-4 pt-10 pb-16">
+    <section class="grid md:grid-cols-2 gap-10 items-center">
+      <div>
+        <span class="inline-flex items-center gap-2 text-xs font-medium px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/30">
+          🧪 MVP • Versão inicial
+        </span>
+        <h1 class="mt-4 text-3xl md:text-4xl font-bold leading-snug">
+          Descubra quanto você <span class="text-emerald-400">realmente sabe</span> da Bíblia em 20 perguntas.
+        </h1>
+        <p class="mt-4 text-sm md:text-base text-slate-300">
+          Um teste rápido, online e gratuito que mostra seu nível de conhecimento bíblico
+          e indica exatamente quais áreas você precisa estudar mais. Ideal para jovens, líderes de célula e igrejas inteiras.
+        </p>
+
+        <div class="mt-6 flex flex-col sm:flex-row gap-3">
+          <!-- COLOQUE AQUI O LINK DO SEU FORM/APP -->
+          <a href="https://seu-link-do-teste-aqui.com"
+             class="inline-flex items-center justify-center px-5 py-3 rounded-xl bg-emerald-500 text-slate-950 font-semibold text-sm md:text-base shadow-lg shadow-emerald-500/30 hover:bg-emerald-400 transition">
+            🎯 Fazer o teste agora
+          </a>
+          <a href="#contato"
+             class="inline-flex items-center justify-center px-5 py-3 rounded-xl border border-slate-700 text-slate-200 text-sm md:text-base hover:border-emerald-400 hover:text-emerald-300 transition">
+            📩 Quero usar na minha igreja
+          </a>
+        </div>
+
+        <p class="mt-3 text-xs text-slate-400">
+          Leva menos de 10 minutos. Sem cadastro obrigatório na versão inicial.
+        </p>
+      </div>
+
+      <!-- Card de destaque -->
+      <div>
+        <div class="relative rounded-2xl border border-slate-800 bg-slate-900/60 p-5 shadow-xl shadow-emerald-500/10">
+          <div class="flex items-center justify-between mb-2 text-xs text-slate-400">
+            <span>Seu resultado</span>
+            <span>em tempo real</span>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="w-24 h-24 rounded-full border-4 border-emerald-500/70 flex items-center justify-center">
+              <div class="text-center">
+                <div class="text-2xl font-bold text-emerald-400">82</div>
+                <div class="text-[10px] uppercase tracking-wide text-slate-400">pontos</div>
+              </div>
+            </div>
+            <div class="flex-1">
+              <h2 class="font-semibold text-sm mb-1">Nível: Conhecedor em crescimento</h2>
+              <p class="text-xs text-slate-300">
+                Você tem boa base bíblica, mas pode aprofundar em:
+                <span class="text-emerald-300">Profetas, Cartas Paulinas e Apocalipse.</span>
+              </p>
+            </div>
+          </div>
+          <div class="mt-4 border-t border-slate-800 pt-3">
+            <p class="text-[11px] text-slate-400">
+              Ao final do teste, você recebe um diagnóstico simples com sugestões de estudo e
+              passagens para se aprofundar.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Como funciona -->
+    <section id="como-funciona" class="mt-16">
+      <h2 class="text-xl md:text-2xl font-semibold mb-2">Como funciona?</h2>
+      <p class="text-sm text-slate-300 mb-6">
+        Pensamos em algo simples, direto e aplicável para qualquer cristão.
+      </p>
+
+      <div class="grid md:grid-cols-3 gap-6 text-sm">
+        <div class="rounded-2xl border border-slate-800 bg-slate-900/60 p-4">
+          <div class="text-2xl mb-2">①</div>
+          <h3 class="font-semibold mb-1">Responda 20 perguntas</h3>
+          <p class="text-slate-300">
+            Perguntas objetivas sobre Antigo e Novo Testamento, personagens e textos-chave.
+          </p>
+        </div>
+        <div class="rounded-2xl border border-slate-800 bg-slate-900/60 p-4">
+          <div class="text-2xl mb-2">②</div>
+          <h3 class="font-semibold mb-1">Receba um score bíblico</h3>
+          <p class="text-slate-300">
+            No final, você vê sua pontuação, nível de conhecimento e onde está mais forte.
+          </p>
+        </div>
+        <div class="rounded-2xl border border-slate-800 bg-slate-900/60 p-4">
+          <div class="text-2xl mb-2">③</div>
+          <h3 class="font-semibold mb-1">Ganhe um diagnóstico simples</h3>
+          <p class="text-slate-300">
+            Indicamos áreas para estudar mais e sugestões de próximos passos na Palavra.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Para igrejas -->
+    <section id="igrejas" class="mt-16">
+      <h2 class="text-xl md:text-2xl font-semibold mb-2">Para igrejas e células</h2>
+      <p class="text-sm text-slate-300 mb-6">
+        Em breve, uma versão própria para líderes, pastores e redes.
+      </p>
+
+      <div class="grid md:grid-cols-2 gap-6 text-sm">
+        <div class="rounded-2xl border border-slate-800 bg-slate-900/60 p-4">
+          <h3 class="font-semibold mb-1">Use no culto, célula ou conferência</h3>
+          <p class="text-slate-300">
+            Compartilhe o link ou um QR Code e deixe toda a igreja fazer o teste em poucos minutos.
+            Funciona bem como quebra-gelo, início de série de mensagens ou diagnóstico de discipulado.
+          </p>
+        </div>
+        <div class="rounded-2xl border border-slate-800 bg-slate-900/60 p-4">
+          <h3 class="font-semibold mb-1">Próximos passos (versão PRO)</h3>
+          <ul class="mt-2 list-disc list-inside text-slate-300 space-y-1">
+            <li>Relatórios por célula / ministério</li>
+            <li>Rankings saudáveis para engajar jovens</li>
+            <li>Testes avançados por tema (Evangelhos, Doutrina, etc.)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contato / captura -->
+    <section id="contato" class="mt-16">
+      <div class="rounded-2xl border border-emerald-500/30 bg-slate-900/70 p-5">
+        <h2 class="text-xl md:text-2xl font-semibold mb-1">
+          Quer usar o Teste da Bíblia na sua igreja?
+        </h2>
+        <p class="text-sm text-slate-300 mb-4">
+          Deixe seu e-mail e vamos te avisar sobre as próximas novidades, versão para igrejas
+          e materiais de apoio para discipulado.
+        </p>
+
+        <form class="flex flex-col sm:flex-row gap-3 max-w-xl">
+          <input
+            type="email"
+            required
+            placeholder="Seu melhor e-mail"
+            class="flex-1 px-4 py-3 rounded-xl bg-slate-950 border border-slate-700 text-sm outline-none focus:border-emerald-400"
+          />
+          <button
+            type="submit"
+            class="px-5 py-3 rounded-xl bg-emerald-500 text-slate-950 font-semibold text-sm hover:bg-emerald-400 transition">
+            Quero ser avisado
+          </button>
+        </form>
+
+        <p class="mt-2 text-[11px] text-slate-400">
+          *Depois você pode integrar esse formulário com uma ferramenta de e-mail (Mailchimp, Brevo, etc.).
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-800">
+    <div class="max-w-5xl mx-auto px-4 py-6 text-xs text-slate-500 flex flex-col sm:flex-row gap-2 sm:items-center sm:justify-between">
+      <span>© <span id="year"></span> Teste da Bíblia. Todos os direitos reservados.</span>
+      <span>“Conhecer a Palavra é conhecer o coração de Deus.”</span>
+    </div>
+  </footer>
+
+  <script>
+    // Ano automático no rodapé
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
