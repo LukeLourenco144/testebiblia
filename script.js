@@ -1,114 +1,131 @@
-// ---------------------------
-// Banco de perguntas
-// ---------------------------
-const questions = [
+// ...existing code...
+// Pool de perguntas (agora com propriedade "difficulty")
+const allQuestions = [
   {
     question: "Quem construiu a arca que salvou sua família do dilúvio?",
     options: ["Moisés", "Noé", "Abraão", "Davi"],
     answerIndex: 1,
-    category: "Gênesis / Início da Bíblia"
+    category: "Gênesis / Início da Bíblia",
+    difficulty: "iniciante"
   },
   {
     question: "Em qual jardim Adão e Eva viviam antes do pecado?",
     options: ["Jardim de Getsêmani", "Jardim de Éden", "Jardim de Nazaré", "Jardim do Rei"],
     answerIndex: 1,
-    category: "Gênesis / Início da Bíblia"
+    category: "Gênesis / Início da Bíblia",
+    difficulty: "iniciante"
   },
   {
     question: "Deus libertou o povo de Israel do Egito através de qual líder?",
     options: ["Josué", "Samuel", "Moisés", "Elias"],
     answerIndex: 2,
-    category: "Pentateuco / Êxodo"
+    category: "Pentateuco / Êxodo",
+    difficulty: "iniciante"
   },
   {
     question: "Qual profeta enfrentou os profetas de Baal no Monte Carmelo?",
     options: ["Elias", "Jeremias", "Isaías", "Ezequiel"],
     answerIndex: 0,
-    category: "Profetas"
+    category: "Profetas",
+    difficulty: "intermediário"
   },
   {
     question: "Qual rei de Israel escreveu muitos salmos e era músico?",
     options: ["Saul", "Salomão", "Davi", "Ezequias"],
     answerIndex: 2,
-    category: "História de Israel"
+    category: "História de Israel",
+    difficulty: "iniciante"
   },
   {
     question: "Qual livro começa com a frase: 'No princípio era o Verbo'?",
     options: ["Gênesis", "João", "Lucas", "Atos"],
     answerIndex: 1,
-    category: "Evangelhos"
+    category: "Evangelhos",
+    difficulty: "iniciante"
   },
   {
     question: "Quantos evangelhos existem no Novo Testamento?",
     options: ["3", "4", "5", "7"],
     answerIndex: 1,
-    category: "Evangelhos"
+    category: "Evangelhos",
+    difficulty: "iniciante"
   },
   {
     question: "Quem negou Jesus três vezes antes do galo cantar?",
     options: ["João", "Pedro", "Tiago", "Tomé"],
     answerIndex: 1,
-    category: "Evangelhos"
+    category: "Evangelhos",
+    difficulty: "iniciante"
   },
   {
     question: "Quem foi usado por Deus para levar o evangelho aos gentios e escreveu muitas cartas?",
     options: ["Pedro", "Tiago", "Paulo", "Barnabé"],
     answerIndex: 2,
-    category: "Cartas (Epístolas)"
+    category: "Cartas (Epístolas)",
+    difficulty: "iniciante"
   },
   {
     question: "Qual é o primeiro livro da Bíblia?",
     options: ["Êxodo", "Salmos", "Mateus", "Gênesis"],
     answerIndex: 3,
-    category: "Gênesis / Início da Bíblia"
+    category: "Gênesis / Início da Bíblia",
+    difficulty: "iniciante"
   },
   {
     question: "Qual é o último livro da Bíblia?",
     options: ["Judas", "Apocalipse", "Hebreus", "Romanos"],
     answerIndex: 1,
-    category: "Apocalipse / Escatologia"
+    category: "Apocalipse / Escatologia",
+    difficulty: "iniciante"
   },
   {
     question: "Jesus multiplicou pães e peixes para alimentar aproximadamente quantas pessoas (homens) em um dos milagres?",
     options: ["500", "5.000", "500.000", "50"],
     answerIndex: 1,
-    category: "Evangelhos"
+    category: "Evangelhos",
+    difficulty: "iniciante"
   },
   {
     question: "Quem foi lançado na cova dos leões por permanecer fiel em oração?",
     options: ["José", "Daniel", "Neemias", "Ester"],
     answerIndex: 1,
-    category: "Profetas / Exílio"
+    category: "Profetas / Exílio",
+    difficulty: "intermediário"
   },
   {
     question: "Qual personagem ficou governador do Egito após interpretar sonhos?",
     options: ["José", "Moisés", "Gideão", "Elias"],
     answerIndex: 0,
-    category: "Gênesis / Patriarcas"
+    category: "Gênesis / Patriarcas",
+    difficulty: "iniciante"
   },
   {
     question: "Qual mulher da Bíblia é conhecida por ter sido rainha e usada para livrar o povo judeu?",
     options: ["Ester", "Rute", "Débora", "Maria"],
     answerIndex: 0,
-    category: "História de Israel"
+    category: "História de Israel",
+    difficulty: "iniciante"
   },
   {
     question: "Qual é o famoso Salmo que começa com: 'O Senhor é o meu pastor'?",
     options: ["Salmo 1", "Salmo 23", "Salmo 91", "Salmo 119"],
     answerIndex: 1,
-    category: "Salmos"
+    category: "Salmos",
+    difficulty: "iniciante"
   },
   {
     question: "Quem escreveu a maioria dos Salmos?",
     options: ["Davi", "Salomão", "Asafe", "Moisés"],
     answerIndex: 0,
-    category: "Salmos"
+    category: "Salmos",
+    difficulty: "iniciante"
   },
   {
     question: "Qual apóstolo caminhou sobre as águas em direção a Jesus?",
     options: ["André", "João", "Pedro", "Tiago"],
     answerIndex: 2,
-    category: "Evangelhos"
+    category: "Evangelhos",
+    difficulty: "iniciante"
   },
   {
     question: "Qual é o primeiro mandamento segundo Êxodo 20?",
@@ -119,16 +136,168 @@ const questions = [
       "Guardarás o sábado"
     ],
     answerIndex: 1,
-    category: "Lei / Mandamentos"
+    category: "Lei / Mandamentos",
+    difficulty: "intermediário"
   },
   {
     question: "Qual livro fala muito sobre a igreja primitiva e as viagens missionárias?",
     options: ["Atos", "Romanos", "Hebreus", "Tiago"],
     answerIndex: 0,
-    category: "História da Igreja (Atos)"
+    category: "História da Igreja (Atos)",
+    difficulty: "iniciante"
+  },
+
+  // +20 perguntas novas (exemplo)
+  {
+    question: "Quem era irmão de Moisés que falava por ele?",
+    options: ["Josué", "Calebe", "Arão", "Efraim"],
+    answerIndex: 2,
+    category: "Pentateuco / Êxodo",
+    difficulty: "iniciante"
+  },
+  {
+    question: "Onde nasceu Jesus?",
+    options: ["Nazaré", "Belém", "Jerusalém", "Betsaida"],
+    answerIndex: 1,
+    category: "Evangelhos",
+    difficulty: "iniciante"
+  },
+  {
+    question: "Quem traiu Jesus por trinta moedas?",
+    options: ["Pedro", "Judas Iscariotes", "Tomé", "Jairo"],
+    answerIndex: 1,
+    category: "Evangelhos",
+    difficulty: "iniciante"
+  },
+  {
+    question: "Por quantos dias Jesus jejuou no deserto?",
+    options: ["7", "14", "40", "20"],
+    answerIndex: 2,
+    category: "Evangelhos",
+    difficulty: "intermediário"
+  },
+  {
+    question: "Qual rei pediu sabedoria a Deus e é famoso pelos provérbios?",
+    options: ["Davi", "Salomão", "Ezequias", "Josias"],
+    answerIndex: 1,
+    category: "História de Israel",
+    difficulty: "iniciante"
+  },
+  {
+    question: "Em que língua foi escrito a maior parte do Antigo Testamento?",
+    options: ["Grego", "Hebraico", "Latim", "Aramaico"],
+    answerIndex: 1,
+    category: "Antigo Testamento",
+    difficulty: "intermediário"
+  },
+  {
+    question: "Qual profeta teve a visão do vale de ossos secos?",
+    options: ["Isaías", "Jeremias", "Ezequiel", "Daniel"],
+    answerIndex: 2,
+    category: "Profetas",
+    difficulty: "avançado"
+  },
+  {
+    question: "Qual evangelho começa com a genealogia de Jesus?",
+    options: ["Marcos", "Lucas", "Mateus", "João"],
+    answerIndex: 2,
+    category: "Evangelhos",
+    difficulty: "intermediário"
+  },
+  {
+    question: "Quantos capítulos tem o livro de Gênesis?",
+    options: ["40", "50", "66", "31"],
+    answerIndex: 1,
+    category: "Gênesis / Início da Bíblia",
+    difficulty: "avançado"
+  },
+  {
+    question: "Quem é chamado de 'apóstolo dos gentios'?",
+    options: ["Pedro", "Paulo", "Lucas", "Barnabé"],
+    answerIndex: 1,
+    category: "Cartas (Epístolas)",
+    difficulty: "iniciante"
+  },
+  {
+    question: "Onde Jesus transformou água em vinho no seu primeiro milagre registrado?",
+    options: ["Canaã", "Caná", "Nazaré", "Cafarnaum"],
+    answerIndex: 1,
+    category: "Evangelhos",
+    difficulty: "intermediário"
+  },
+  {
+    question: "Quem sucedeu Moisés como líder de Israel?",
+    options: ["Calebe", "Josué", "Elias", "Sansão"],
+    answerIndex: 1,
+    category: "História de Israel",
+    difficulty: "intermediário"
+  },
+  {
+    question: "Em qual evangelho aparece a declaração 'Eu sou o caminho, a verdade e a vida'?",
+    options: ["Mateus", "Marcos", "Lucas", "João"],
+    answerIndex: 3,
+    category: "Evangelhos",
+    difficulty: "intermediário"
+  },
+  {
+    question: "Quantos livros tem o Novo Testamento?",
+    options: ["24", "27", "39", "66"],
+    answerIndex: 1,
+    category: "Novo Testamento",
+    difficulty: "intermediário"
+  },
+  {
+    question: "Quem batizou Jesus?",
+    options: ["Pedro", "João Batista", "Paulo", "Nicodemos"],
+    answerIndex: 1,
+    category: "Evangelhos",
+    difficulty: "iniciante"
+  },
+  {
+    question: "Qual discípulo era cobrador de impostos antes de seguir Jesus?",
+    options: ["Mateus", "Pedro", "Tiago", "André"],
+    answerIndex: 0,
+    category: "Evangelhos",
+    difficulty: "iniciante"
+  },
+  {
+    question: "Quem escreveu o livro de Apocalipse?",
+    options: ["Paulo", "Pedro", "João", "Tiago"],
+    answerIndex: 2,
+    category: "Apocalipse / Escatologia",
+    difficulty: "intermediário"
+  },
+  {
+    question: "Qual profeta foi engolido por um grande peixe e depois pregou em Nínive?",
+    options: ["Jonas", "Amós", "Oséias", "Habacuque"],
+    answerIndex: 0,
+    category: "Profetas",
+    difficulty: "iniciante"
+  },
+  {
+    question: "Qual livro é conhecido por ser um manual de sabedoria e contém muitos provérbios?",
+    options: ["Salmos", "Provérbios", "Isaías", "Eclesiastes"],
+    answerIndex: 1,
+    category: "Sabedoria / Literatura",
+    difficulty: "iniciante"
   }
 ];
 
+// Número de perguntas por teste
+const QUESTIONS_PER_TEST = 20;
+
+// Função utilitária: embaralhar e escolher N perguntas
+function pickRandomQuestions(count = QUESTIONS_PER_TEST) {
+  const pool = allQuestions.slice();
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+  return pool.slice(0, Math.min(count, pool.length));
+}
+
+// Variáveis que controlam o teste (serão definidas a partir do pool selecionado)
+let questions = pickRandomQuestions(); // conjunto atual com exatamente QUESTIONS_PER_TEST (ou menos se pool menor)
 let currentIndex = 0;
 let answers = Array(questions.length).fill(null); // guarda índice da opção marcada
 let score = 0;
@@ -165,7 +334,7 @@ function renderQuestion() {
 
   // Atualiza progresso
   progressText.textContent = `Pergunta ${currentIndex + 1} de ${questions.length}`;
-  const percent = ((currentIndex) / questions.length) * 100;
+  const percent = (currentIndex / questions.length) * 100;
   progressBar.style.width = `${percent}%`;
 
   // Atualiza estado do botão anterior
@@ -180,7 +349,7 @@ function renderQuestion() {
   errorMessage.classList.add("hidden");
 
   q.options.forEach((opt, idx) => {
-    const id = `option-${idx}`;
+    const id = `option-${currentIndex}-${idx}`;
 
     const wrapper = document.createElement("label");
     wrapper.className =
@@ -350,6 +519,8 @@ function addTip(text) {
 // Refazer teste
 // ---------------------------
 retryBtn.addEventListener("click", () => {
+  // escolhe novo conjunto aleatório de QUESTIONS_PER_TEST
+  questions = pickRandomQuestions();
   currentIndex = 0;
   answers = Array(questions.length).fill(null);
   score = 0;
