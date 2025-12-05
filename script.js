@@ -1,4 +1,3 @@
-// ...existing code...
 // Pool de perguntas (agora com propriedade "difficulty")
 const allQuestions = [
   {
@@ -286,21 +285,91 @@ const allQuestions = [
 // Número de perguntas por teste
 const QUESTIONS_PER_TEST = 20;
 
-// Função utilitária: embaralhar e escolher N perguntas
-function pickRandomQuestions(count = QUESTIONS_PER_TEST) {
-  const pool = allQuestions.slice();
-  for (let i = pool.length - 1; i > 0; i--) {
+// utilitário: embaralhar array (Fisher-Yates)
+function shuffle(array) {
+  const a = array.slice();
+  for (let i = a.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [pool[i], pool[j]] = [pool[j], pool[i]];
+    [a[i], a[j]] = [a[j], a[i]];
   }
-  return pool.slice(0, Math.min(count, pool.length));
+  return a;
 }
 
-// Variáveis que controlam o teste (serão definidas a partir do pool selecionado)
-let questions = pickRandomQuestions(); // conjunto atual com exatamente QUESTIONS_PER_TEST (ou menos se pool menor)
+// --- Adaptive selection state ---
+// Dividir por dificuldade e embaralhar cada grupo
+const difficultyLevels = ["iniciante", "intermediário", "avançado"];
+let remainingByDifficulty = {};
+let questionsAsked = []; // perguntas efetivamente mostradas em ordem
+let answers = []; // índices de resposta do usuário (mesmo length que questionsAsked)
 let currentIndex = 0;
-let answers = Array(questions.length).fill(null); // guarda índice da opção marcada
 let score = 0;
+// começa em nível intermediário (índice 1)
+let currentDifficultyIndex = 1;
+
+function resetRemaining() {
+  remainingByDifficulty = {
+    iniciante: shuffle(allQuestions.filter(q => q.difficulty === "iniciante")),
+    "intermediário": shuffle(allQuestions.filter(q => q.difficulty === "intermediário")),
+    avançado: shuffle(allQuestions.filter(q => q.difficulty === "avançado"))
+  };
+
+  // fallback: se alguma categoria estiver vazia, preencha com perguntas de outras dificuldades
+  // (não estritamente necessário se há perguntas suficientes)
+  questionsAsked = [];
+  answers = [];
+  currentIndex = 0;
+  score = 0;
+  currentDifficultyIndex = 1;
+}
+
+// pega próxima pergunta com base no currentDifficultyIndex, buscando níveis próximos se necessário
+function pickNextQuestion() {
+  if (questionsAsked.length >= QUESTIONS_PER_TEST) return null;
+
+  let q = null;
+  const tryLevel = (idx) => {
+    const lvl = difficultyLevels[idx];
+    const arr = remainingByDifficulty[lvl];
+    if (arr && arr.length) return arr.pop();
+    return null;
+  };
+
+  // tenta no nível atual
+  q = tryLevel(currentDifficultyIndex);
+
+  // busca níveis próximos caso não tenha pergunta no nível atual
+  if (!q) {
+    const offsets = [1, -1, 2, -2]; // ordem: próximo mais difícil, mais fácil, extremos
+    for (const off of offsets) {
+      const idx = currentDifficultyIndex + off;
+      if (idx >= 0 && idx < difficultyLevels.length) {
+        q = tryLevel(idx);
+        if (q) {
+          currentDifficultyIndex = idx; // ajusta nível para o nível em que pegamos a pergunta
+          break;
+        }
+      }
+    }
+  }
+
+  // fallback: qualquer pergunta restante
+  if (!q) {
+    for (const lvl of difficultyLevels) {
+      if (remainingByDifficulty[lvl] && remainingByDifficulty[lvl].length) {
+        q = remainingByDifficulty[lvl].pop();
+        currentDifficultyIndex = difficultyLevels.indexOf(lvl);
+        break;
+      }
+    }
+  }
+
+  if (q) {
+    questionsAsked.push(q);
+    answers.push(null);
+  }
+
+  return q;
+}
 
 // ---------------------------
 // Seleção de elementos
@@ -329,22 +398,25 @@ const retryBtn = document.getElementById("retry-btn");
 // Renderização da pergunta
 // ---------------------------
 function renderQuestion() {
-  const q = questions[currentIndex];
+  const q = questionsAsked[currentIndex];
+  if (!q) {
+    questionText.textContent = "Carregando pergunta...";
+    optionsForm.innerHTML = "";
+    return;
+  }
+
   questionText.textContent = q.question;
 
-  // Atualiza progresso
-  progressText.textContent = `Pergunta ${currentIndex + 1} de ${questions.length}`;
-  const percent = (currentIndex / questions.length) * 100;
+  // Atualiza progresso (sempre mostrando 20 como total previsto)
+  progressText.textContent = `Pergunta ${currentIndex + 1} de ${QUESTIONS_PER_TEST}`;
+  const percent = (currentIndex / QUESTIONS_PER_TEST) * 100;
   progressBar.style.width = `${percent}%`;
 
-  // Atualiza estado do botão anterior
   prevBtn.disabled = currentIndex === 0;
 
-  // Troca texto do botão próximo na última pergunta
   nextBtn.textContent =
-    currentIndex === questions.length - 1 ? "Finalizar teste" : "Próxima pergunta";
+    currentIndex === QUESTIONS_PER_TEST - 1 ? "Finalizar teste" : "Próxima pergunta";
 
-  // Limpa opções
   optionsForm.innerHTML = "";
   errorMessage.classList.add("hidden");
 
@@ -370,6 +442,10 @@ function renderQuestion() {
     input.addEventListener("change", () => {
       answers[currentIndex] = idx;
       errorMessage.classList.add("hidden");
+      // realça a opção selecionada
+      Array.from(optionsForm.querySelectorAll("label")).forEach(l => l.classList.remove("border-emerald-500"));
+      wrapper.classList.add("border-emerald-500");
+      updateScorePreview();
     });
 
     const span = document.createElement("span");
@@ -386,7 +462,7 @@ function renderQuestion() {
 function updateScorePreview() {
   let partialScore = 0;
   answers.forEach((ans, idx) => {
-    if (ans === questions[idx].answerIndex) partialScore++;
+    if (ans === questionsAsked[idx].answerIndex) partialScore++;
   });
   scorePreview.textContent = `Pontuação: ${partialScore}`;
 }
@@ -402,13 +478,32 @@ nextBtn.addEventListener("click", () => {
     return;
   }
 
-  // Última pergunta → finalizar
-  if (currentIndex === questions.length - 1) {
+  // verifica acerto da pergunta atual
+  const currentQuestion = questionsAsked[currentIndex];
+  const userAns = answers[currentIndex];
+  const isCorrect = userAns === currentQuestion.answerIndex;
+
+  // ajusta dificuldade adaptativa
+  if (isCorrect) {
+    currentDifficultyIndex = Math.min(currentDifficultyIndex + 1, difficultyLevels.length - 1);
+  } else {
+    currentDifficultyIndex = Math.max(currentDifficultyIndex - 1, 0);
+  }
+
+  // se for a última pergunta → finalizar
+  if (currentIndex === QUESTIONS_PER_TEST - 1) {
     calculateResult();
     return;
   }
 
+  // avança índice
   currentIndex++;
+
+  // se ainda não geramos a próxima pergunta, gera agora com base na dificuldade adaptativa
+  if (currentIndex >= questionsAsked.length) {
+    pickNextQuestion();
+  }
+
   renderQuestion();
 });
 
@@ -426,7 +521,7 @@ function calculateResult() {
   score = 0;
   const categoryStats = {}; // { categoria: { total: X, erros: Y } }
 
-  questions.forEach((q, idx) => {
+  questionsAsked.forEach((q, idx) => {
     if (!categoryStats[q.category]) {
       categoryStats[q.category] = { total: 0, erros: 0 };
     }
@@ -439,7 +534,8 @@ function calculateResult() {
     }
   });
 
-  const percent = Math.round((score / questions.length) * 100);
+  const totalAsked = questionsAsked.length || 1;
+  const percent = Math.round((score / totalAsked) * 100);
 
   // Nível
   let level = "";
@@ -458,7 +554,7 @@ function calculateResult() {
     .map(([cat]) => cat);
 
   // Preenche tela
-  finalScoreEl.textContent = `${score} / ${questions.length}`;
+  finalScoreEl.textContent = `${score} / ${totalAsked}`;
   finalPercentEl.textContent = `${percent}%`;
   finalLevelEl.textContent = level;
 
@@ -507,6 +603,10 @@ function calculateResult() {
   // troca de seções
   quizSection.classList.add("hidden");
   resultSection.classList.remove("hidden");
+
+  // mostra botão de compartilhamento (caso esteja oculto por algum motivo)
+  const shareBtn = document.getElementById("share-btn");
+  if (shareBtn) shareBtn.classList.remove("hidden");
 }
 
 function addTip(text) {
@@ -519,10 +619,11 @@ function addTip(text) {
 // Refazer teste
 // ---------------------------
 retryBtn.addEventListener("click", () => {
-  // escolhe novo conjunto aleatório de QUESTIONS_PER_TEST
-  questions = pickRandomQuestions();
+  resetRemaining();
+  // gera primeira pergunta
+  pickNextQuestion();
   currentIndex = 0;
-  answers = Array(questions.length).fill(null);
+  // reseta UI
   score = 0;
   quizSection.classList.remove("hidden");
   resultSection.classList.add("hidden");
@@ -530,6 +631,58 @@ retryBtn.addEventListener("click", () => {
 });
 
 // ---------------------------
+// Compartilhar / salvar imagem do resultado
+// (mantido sem alterações)
+// ---------------------------
+function shareResultAsImage() {
+  const node = document.getElementById("result-section");
+  if (!node) return;
+
+  html2canvas(node, { backgroundColor: "#0f1724", scale: 2 }).then((canvas) => {
+    canvas.toBlob((blob) => {
+      if (!blob) return;
+
+      const fileName = `teste-biblia-${Date.now()}.png`;
+
+      if (navigator.canShare && navigator.canShare({ files: [new File([blob], fileName, { type: blob.type })] })) {
+        const file = new File([blob], fileName, { type: blob.type });
+        navigator.share({
+          files: [file],
+          title: "Meu resultado - Teste da Bíblia",
+          text: "Veja meu resultado no Teste da Bíblia!"
+        }).catch(() => {
+          downloadBlob(blob, fileName);
+        });
+      } else {
+        downloadBlob(blob, fileName);
+      }
+    }, "image/png");
+  }).catch(() => {
+    alert("Não foi possível gerar a imagem. Tente atualizar a página e tentar novamente.");
+  });
+}
+
+function downloadBlob(blob, fileName) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = fileName;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  alert("Imagem gerada e salva. Compartilhe seu resultado!");
+}
+
+document.addEventListener("click", (e) => {
+  if (e.target && e.target.id === "share-btn") {
+    shareResultAsImage();
+  }
+});
+
+// ---------------------------
 // Inicialização
 // ---------------------------
+resetRemaining();
+pickNextQuestion(); // gera a primeira pergunta adaptativa
 renderQuestion();

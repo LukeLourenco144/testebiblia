@@ -1,8 +1,20 @@
+// ...existing code...
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-LMCF5N3D6X"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-LMCF5N3D6X');
+  </script>
+
+
   <title>Teste da Bíblia - Descubra quanto você realmente sabe</title>
   <meta name="description" content="Faça o Teste da Bíblia em 20 perguntas, descubra seu nível de conhecimento bíblico e receba um diagnóstico do que precisa estudar mais. Ideal para cristãos, células e igrejas.">
   <!-- Tailwind via CDN (pra agilizar o design) -->
@@ -20,7 +32,6 @@
       </div>
       <nav class="hidden md:flex items-center gap-6 text-sm text-slate-300">
         <a href="#como-funciona" class="hover:text-emerald-400 transition">Como funciona</a>
-        <a href="#igrejas" class="hover:text-emerald-400 transition">Para igrejas</a>
         <a href="#contato" class="hover:text-emerald-400 transition">Contato</a>
       </nav>
     </div>
@@ -42,15 +53,16 @@
         </p>
 
         <div class="mt-6 flex flex-col sm:flex-row gap-3">
-          <!-- COLOQUE AQUI O LINK DO SEU FORM/APP -->
+          <!-- AQUI O LINK DO TESTE -->
           <a href="quiz.html"
-             class="inline-flex items-center justify-center px-5 py-3 rounded-xl bg-emerald-500 text-slate-950 font-semibold text-sm md:text-base shadow-lg shadow-emerald-500/30 hover:bg-emerald-400 transition">
-            🎯 Fazer o teste agora
-          </a>
-          <a href="#contato"
-             class="inline-flex items-center justify-center px-5 py-3 rounded-xl border border-slate-700 text-slate-200 text-sm md:text-base hover:border-emerald-400 hover:text-emerald-300 transition">
-            📩 Quero usar na minha igreja
-          </a>
+            onclick="gtag('event', 'clique_fazer_teste', {
+            event_category: 'engajamento',
+            event_label: 'botao_fazer_teste_agora'
+         });"
+         class="inline-flex items-center justify-center px-5 py-3 rounded-xl bg-emerald-500 text-slate-950 font-semibold text-sm md:text-base shadow-lg shadow-emerald-500/30 hover:bg-emerald-400 transition">
+         🎯 Fazer o teste agora
+        </a>
+
         </div>
 
         <p class="mt-3 text-xs text-slate-400">
@@ -122,41 +134,17 @@
       </div>
     </section>
 
-    <!-- Para igrejas -->
-    <section id="igrejas" class="mt-16">
-      <h2 class="text-xl md:text-2xl font-semibold mb-2">Para igrejas e células</h2>
-      <p class="text-sm text-slate-300 mb-6">
-        Em breve, uma versão própria para líderes, pastores e redes.
-      </p>
 
-      <div class="grid md:grid-cols-2 gap-6 text-sm">
-        <div class="rounded-2xl border border-slate-800 bg-slate-900/60 p-4">
-          <h3 class="font-semibold mb-1">Use no culto, célula ou conferência</h3>
-          <p class="text-slate-300">
-            Compartilhe o link ou um QR Code e deixe toda a igreja fazer o teste em poucos minutos.
-            Funciona bem como quebra-gelo, início de série de mensagens ou diagnóstico de discipulado.
-          </p>
-        </div>
-        <div class="rounded-2xl border border-slate-800 bg-slate-900/60 p-4">
-          <h3 class="font-semibold mb-1">Próximos passos (versão PRO)</h3>
-          <ul class="mt-2 list-disc list-inside text-slate-300 space-y-1">
-            <li>Relatórios por célula / ministério</li>
-            <li>Rankings saudáveis para engajar jovens</li>
-            <li>Testes avançados por tema (Evangelhos, Doutrina, etc.)</li>
-          </ul>
-        </div>
-      </div>
-    </section>
 
     <!-- Contato / captura -->
     <section id="contato" class="mt-16">
       <div class="rounded-2xl border border-emerald-500/30 bg-slate-900/70 p-5">
         <h2 class="text-xl md:text-2xl font-semibold mb-1">
-          Quer usar o Teste da Bíblia na sua igreja?
+          Quer saber mais sobre o Teste da Bíblia?
         </h2>
         <p class="text-sm text-slate-300 mb-4">
-          Deixe seu e-mail e vamos te avisar sobre as próximas novidades, versão para igrejas
-          e materiais de apoio para discipulado.
+          Entre em contato diretamente pelo e-mail:
+          <a href="mailto:lucaslourenco@msn.com" class="text-emerald-300 hover:underline">lucaslourenco@msn.com</a>
         </p>
 
         <form class="flex flex-col sm:flex-row gap-3 max-w-xl">
@@ -174,7 +162,7 @@
         </form>
 
         <p class="mt-2 text-[11px] text-slate-400">
-          *Depois você pode integrar esse formulário com uma ferramenta de e-mail (Mailchimp, Brevo, etc.).
+          *Deixe seu email para entrarmos em contato e saber mais.
         </p>
       </div>
     </section>
@@ -194,3 +182,4 @@
   </script>
 </body>
 </html>
+// ...existing code...
