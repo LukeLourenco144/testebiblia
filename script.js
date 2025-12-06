@@ -1,4 +1,4 @@
-// Pool de perguntas (agora com propriedade "difficulty")
+// Pool de perguntas (já com propriedade "difficulty")
 const allQuestions = [
   {
     question: "Quem construiu a arca que salvou sua família do dilúvio?",
@@ -146,7 +146,7 @@ const allQuestions = [
     difficulty: "iniciante"
   },
 
-  // +20 perguntas novas (exemplo)
+  // + perguntas novas
   {
     question: "Quem era irmão de Moisés que falava por ele?",
     options: ["Josué", "Calebe", "Arão", "Efraim"],
@@ -285,6 +285,13 @@ const allQuestions = [
 // Número de perguntas por teste
 const QUESTIONS_PER_TEST = 20;
 
+// pesos por dificuldade (para o score 0–1000)
+function getDifficultyWeight(diff) {
+  if (diff === "avançado") return 70;
+  if (diff === "intermediário") return 50;
+  return 30; // iniciante (default)
+}
+
 // utilitário: embaralhar array (Fisher-Yates)
 function shuffle(array) {
   const a = array.slice();
@@ -296,15 +303,13 @@ function shuffle(array) {
 }
 
 // --- Adaptive selection state ---
-// Dividir por dificuldade e embaralhar cada grupo
 const difficultyLevels = ["iniciante", "intermediário", "avançado"];
 let remainingByDifficulty = {};
-let questionsAsked = []; // perguntas efetivamente mostradas em ordem
-let answers = []; // índices de resposta do usuário (mesmo length que questionsAsked)
+let questionsAsked = [];
+let answers = [];
 let currentIndex = 0;
-let score = 0;
-// começa em nível intermediário (índice 1)
-let currentDifficultyIndex = 1;
+let score = 0; // score final normalizado 0–1000
+let currentDifficultyIndex = 1; // começa em intermediário
 
 function resetRemaining() {
   remainingByDifficulty = {
@@ -313,8 +318,6 @@ function resetRemaining() {
     avançado: shuffle(allQuestions.filter(q => q.difficulty === "avançado"))
   };
 
-  // fallback: se alguma categoria estiver vazia, preencha com perguntas de outras dificuldades
-  // (não estritamente necessário se há perguntas suficientes)
   questionsAsked = [];
   answers = [];
   currentIndex = 0;
@@ -322,7 +325,6 @@ function resetRemaining() {
   currentDifficultyIndex = 1;
 }
 
-// pega próxima pergunta com base no currentDifficultyIndex, buscando níveis próximos se necessário
 function pickNextQuestion() {
   if (questionsAsked.length >= QUESTIONS_PER_TEST) return null;
 
@@ -334,25 +336,22 @@ function pickNextQuestion() {
     return null;
   };
 
-  // tenta no nível atual
   q = tryLevel(currentDifficultyIndex);
 
-  // busca níveis próximos caso não tenha pergunta no nível atual
   if (!q) {
-    const offsets = [1, -1, 2, -2]; // ordem: próximo mais difícil, mais fácil, extremos
+    const offsets = [1, -1, 2, -2];
     for (const off of offsets) {
       const idx = currentDifficultyIndex + off;
       if (idx >= 0 && idx < difficultyLevels.length) {
         q = tryLevel(idx);
         if (q) {
-          currentDifficultyIndex = idx; // ajusta nível para o nível em que pegamos a pergunta
+          currentDifficultyIndex = idx;
           break;
         }
       }
     }
   }
 
-  // fallback: qualquer pergunta restante
   if (!q) {
     for (const lvl of difficultyLevels) {
       if (remainingByDifficulty[lvl] && remainingByDifficulty[lvl].length) {
@@ -388,11 +387,14 @@ const quizSection = document.getElementById("quiz-section");
 const resultSection = document.getElementById("result-section");
 
 const finalScoreEl = document.getElementById("final-score");
-const finalPercentEl = document.getElementById("final-percent");
 const finalLevelEl = document.getElementById("final-level");
 const diagnosticTextEl = document.getElementById("diagnostic-text");
 const studyTipsEl = document.getElementById("study-tips");
 const retryBtn = document.getElementById("retry-btn");
+
+const badgeIcon = document.getElementById("badge-icon");
+const badgeRibbon = document.getElementById("badge-ribbon");
+const badgeLabelEl = document.getElementById("badge-label");
 
 // ---------------------------
 // Renderização da pergunta
@@ -407,13 +409,11 @@ function renderQuestion() {
 
   questionText.textContent = q.question;
 
-  // Atualiza progresso (sempre mostrando 20 como total previsto)
   progressText.textContent = `Pergunta ${currentIndex + 1} de ${QUESTIONS_PER_TEST}`;
   const percent = (currentIndex / QUESTIONS_PER_TEST) * 100;
   progressBar.style.width = `${percent}%`;
 
   prevBtn.disabled = currentIndex === 0;
-
   nextBtn.textContent =
     currentIndex === QUESTIONS_PER_TEST - 1 ? "Finalizar teste" : "Próxima pergunta";
 
@@ -442,8 +442,9 @@ function renderQuestion() {
     input.addEventListener("change", () => {
       answers[currentIndex] = idx;
       errorMessage.classList.add("hidden");
-      // realça a opção selecionada
-      Array.from(optionsForm.querySelectorAll("label")).forEach(l => l.classList.remove("border-emerald-500"));
+      Array.from(optionsForm.querySelectorAll("label")).forEach(l =>
+        l.classList.remove("border-emerald-500")
+      );
       wrapper.classList.add("border-emerald-500");
       updateScorePreview();
     });
@@ -460,11 +461,11 @@ function renderQuestion() {
 }
 
 function updateScorePreview() {
-  let partialScore = 0;
+  let correct = 0;
   answers.forEach((ans, idx) => {
-    if (ans === questionsAsked[idx].answerIndex) partialScore++;
+    if (ans === questionsAsked[idx].answerIndex) correct++;
   });
-  scorePreview.textContent = `Pontuação: ${partialScore}`;
+  scorePreview.textContent = `Respostas corretas: ${correct}`;
 }
 
 // ---------------------------
@@ -478,28 +479,23 @@ nextBtn.addEventListener("click", () => {
     return;
   }
 
-  // verifica acerto da pergunta atual
   const currentQuestion = questionsAsked[currentIndex];
   const userAns = answers[currentIndex];
   const isCorrect = userAns === currentQuestion.answerIndex;
 
-  // ajusta dificuldade adaptativa
   if (isCorrect) {
     currentDifficultyIndex = Math.min(currentDifficultyIndex + 1, difficultyLevels.length - 1);
   } else {
     currentDifficultyIndex = Math.max(currentDifficultyIndex - 1, 0);
   }
 
-  // se for a última pergunta → finalizar
   if (currentIndex === QUESTIONS_PER_TEST - 1) {
     calculateResult();
     return;
   }
 
-  // avança índice
   currentIndex++;
 
-  // se ainda não geramos a próxima pergunta, gera agora com base na dificuldade adaptativa
   if (currentIndex >= questionsAsked.length) {
     pickNextQuestion();
   }
@@ -515,96 +511,186 @@ prevBtn.addEventListener("click", () => {
 });
 
 // ---------------------------
-// Cálculo do resultado
+// Cálculo do resultado (score 0–1000 + badge)
 // ---------------------------
 function calculateResult() {
-  score = 0;
-  const categoryStats = {}; // { categoria: { total: X, erros: Y } }
+  // ---------------------------
+// Cálculo do resultado (score 0–1000 + badge com efeitos)
+// ---------------------------
+  let rawScore = 0;
+  let maxScore = 0;
+  const categoryStats = {};
 
   questionsAsked.forEach((q, idx) => {
+    const weight = getDifficultyWeight(q.difficulty);
+    maxScore += weight;
+
     if (!categoryStats[q.category]) {
       categoryStats[q.category] = { total: 0, erros: 0 };
     }
     categoryStats[q.category].total++;
 
     if (answers[idx] === q.answerIndex) {
-      score++;
+      rawScore += weight;
     } else {
       categoryStats[q.category].erros++;
     }
   });
 
-  const totalAsked = questionsAsked.length || 1;
-  const percent = Math.round((score / totalAsked) * 100);
+  const normalizedScore = Math.round((rawScore / (maxScore || 1)) * 1000);
+  score = normalizedScore;
 
-  // Nível
-  let level = "";
-  if (percent <= 40) level = "Iniciante na Bíblia";
-  else if (percent <= 70) level = "Conhecedor em crescimento";
-  else if (percent <= 90) level = "Bom conhecedor da Bíblia";
-  else level = "Conhecimento profundo (continue firme!)";
+  // Definição de nível (faixas)
+  let levelName = "";
+  let ribbonBg = "#ef4444"; // cor da faixa
+  let badgeText = "Iniciante";
 
-  // Diagnóstico: pega categorias com mais erros
-  const sortedCategories = Object.entries(categoryStats)
-    .sort((a, b) => b[1].erros - a[1].erros);
+  if (score < 250) {
+    levelName = "Iniciante";
+    badgeText = "Iniciante";
+    ribbonBg = "#ef4444"; // red-500
+  } else if (score < 500) {
+    levelName = "Intermediário";
+    badgeText = "Intermediário";
+    ribbonBg = "#facc15"; // yellow-400
+  } else if (score < 800) {
+    levelName = "Avançado";
+    badgeText = "Avançado";
+    ribbonBg = "#22c55e"; // green-500
+  } else {
+    levelName = "Mestre";
+    badgeText = "Mestre";
+    ribbonBg = "#a855f7"; // purple-500
+  }
+
+  // Atualiza elementos principais
+  finalScoreEl.textContent = `${score} / 1000`;
+  finalLevelEl.textContent = `Nível ${levelName}`;
+  badgeLabelEl.textContent = badgeText;
+
+  // 🌈 Aplica classes visuais na insígnia (círculo com troféu)
+  if (badgeIcon) {
+    // limpa estados anteriores
+    badgeIcon.classList.remove(
+      "badge-iniciante",
+      "badge-intermediario",
+      "badge-avancado",
+      "badge-mestre",
+      "badge-animated"
+    );
+
+    // adiciona classe conforme o nível
+    if (levelName === "Iniciante") {
+      badgeIcon.classList.add("badge-iniciante");
+    } else if (levelName === "Intermediário") {
+      badgeIcon.classList.add("badge-intermediario");
+    } else if (levelName === "Avançado") {
+      badgeIcon.classList.add("badge-avancado");
+    } else {
+      badgeIcon.classList.add("badge-mestre");
+    }
+
+    // garante animação de brilho / partículas
+    badgeIcon.classList.add("badge-animated", "badge-base");
+  }
+
+  // cor da faixa embaixo do nível
+  if (badgeRibbon) {
+    badgeRibbon.style.backgroundColor = ribbonBg;
+  }
+
+  // ---------- Diagnóstico: categorias com mais erros ----------
+  const sortedCategories = Object.entries(categoryStats).sort(
+    (a, b) => b[1].erros - a[1].erros
+  );
 
   const pontosFracos = sortedCategories
     .filter(([_, stats]) => stats.erros > 0)
     .slice(0, 3)
     .map(([cat]) => cat);
 
-  // Preenche tela
-  finalScoreEl.textContent = `${score} / ${totalAsked}`;
-  finalPercentEl.textContent = `${percent}%`;
-  finalLevelEl.textContent = level;
-
   if (pontosFracos.length === 0) {
-    diagnosticTextEl.textContent =
-      "Parabéns! Você acertou praticamente tudo. Continue aprofundando sua leitura e meditação na Palavra.";
+    if (score >= 800) {
+      diagnosticTextEl.textContent =
+        "Impressionante! Você mandou muito bem. Continue firme estudando e ensinando a Palavra.";
+    } else {
+      diagnosticTextEl.textContent =
+        "Você foi muito bem! Mesmo assim, siga crescendo na leitura e meditação diária.";
+    }
   } else {
-    diagnosticTextEl.textContent =
-      `Você foi bem, mas pode crescer especialmente em: ${pontosFracos.join(", ")}.`;
+    diagnosticTextEl.textContent = `Você foi bem, mas pode crescer especialmente em: ${pontosFracos.join(
+      ", "
+    )}.`;
   }
 
-  // Sugestões simples
+  // ---------- Sugestões de estudo (igual antes) ----------
   studyTipsEl.innerHTML = "";
-  if (pontosFracos.includes("Gênesis / Início da Bíblia") || pontosFracos.includes("Gênesis / Patriarcas")) {
-    addTip("Reserve alguns dias para ler Gênesis com calma, anotando a história da criação, de Noé e dos patriarcas (Abraão, Isaque, Jacó e José).");
+
+  if (
+    pontosFracos.includes("Gênesis / Início da Bíblia") ||
+    pontosFracos.includes("Gênesis / Patriarcas")
+  ) {
+    addTip(
+      "Reserve alguns dias para ler Gênesis com calma, anotando a história da criação, de Noé e dos patriarcas (Abraão, Isaque, Jacó e José)."
+    );
   }
-  if (pontosFracos.includes("Pentateuco / Êxodo") || pontosFracos.includes("Lei / Mandamentos")) {
-    addTip("Leia Êxodo 1–20 para entender a libertação do Egito e os Dez Mandamentos, pedindo ao Espírito Santo entendimento.");
+  if (
+    pontosFracos.includes("Pentateuco / Êxodo") ||
+    pontosFracos.includes("Lei / Mandamentos")
+  ) {
+    addTip(
+      "Leia Êxodo 1–20 para entender a libertação do Egito e os Dez Mandamentos, pedindo ao Espírito Santo entendimento."
+    );
   }
-  if (pontosFracos.includes("Profetas") || pontosFracos.includes("Profetas / Exílio")) {
-    addTip("Separe um tempo para ler livros proféticos como Elias (em 1 Reis), Jeremias e Daniel, observando as mensagens de correção e esperança.");
+  if (
+    pontosFracos.includes("Profetas") ||
+    pontosFracos.includes("Profetas / Exílio")
+  ) {
+    addTip(
+      "Separe um tempo para ler livros proféticos como Elias (em 1 Reis), Jeremias e Daniel, observando as mensagens de correção e esperança."
+    );
   }
   if (pontosFracos.includes("História de Israel")) {
-    addTip("Leia Josué, Juízes, Rute e 1–2 Samuel para ver a formação do povo, dos juízes e dos reis de Israel.");
+    addTip(
+      "Leia Josué, Juízes, Rute e 1–2 Samuel para ver a formação do povo, dos juízes e dos reis de Israel."
+    );
   }
   if (pontosFracos.includes("Salmos")) {
-    addTip("Escolha alguns Salmos (como 1, 23, 51, 91) e leia em oração, transformando os textos em conversa com Deus.");
+    addTip(
+      "Escolha alguns Salmos (como 1, 23, 51, 91) e leia em oração, transformando os textos em conversa com Deus."
+    );
   }
   if (pontosFracos.includes("Evangelhos")) {
-    addTip("Leia pelo menos um evangelho inteiro (Mateus, Marcos, Lucas ou João), prestando atenção nas palavras e atitudes de Jesus.");
+    addTip(
+      "Leia pelo menos um evangelho inteiro (Mateus, Marcos, Lucas ou João), prestando atenção nas palavras e atitudes de Jesus."
+    );
   }
   if (pontosFracos.includes("Cartas (Epístolas)")) {
-    addTip("Leia Romanos, Efésios ou Filipenses para entender melhor doutrina, graça e vida cristã prática.");
+    addTip(
+      "Leia Romanos, Efésios ou Filipenses para entender melhor doutrina, graça e vida cristã prática."
+    );
   }
   if (pontosFracos.includes("História da Igreja (Atos)")) {
-    addTip("Leia Atos dos Apóstolos para ver como a igreja começou, como o Espírito Santo agiu e como o evangelho se espalhou.");
+    addTip(
+      "Leia Atos dos Apóstolos para ver como a igreja começou, como o Espírito Santo agiu e como o evangelho se espalhou."
+    );
   }
   if (pontosFracos.includes("Apocalipse / Escatologia")) {
-    addTip("Leia Apocalipse com calma, de preferência junto com um bom comentário ou com seu pastor, buscando entender as visões e a esperança da volta de Cristo.");
+    addTip(
+      "Leia Apocalipse com calma, de preferência junto com um bom comentário ou com seu pastor, buscando entender as visões e a esperança da volta de Cristo."
+    );
   }
 
   if (studyTipsEl.children.length === 0) {
-    addTip("Mesmo com bom resultado, mantenha o hábito diário de leitura bíblica e meditação. A Palavra é viva e sempre tem algo novo para te ensinar.");
+    addTip(
+      "Mesmo com bom resultado, mantenha o hábito diário de leitura bíblica e meditação. A Palavra é viva e sempre tem algo novo para te ensinar."
+    );
   }
 
-  // troca de seções
+  // mostra tela de resultado
   quizSection.classList.add("hidden");
   resultSection.classList.remove("hidden");
 
-  // mostra botão de compartilhamento (caso esteja oculto por algum motivo)
   const shareBtn = document.getElementById("share-btn");
   if (shareBtn) shareBtn.classList.remove("hidden");
 }
@@ -620,10 +706,8 @@ function addTip(text) {
 // ---------------------------
 retryBtn.addEventListener("click", () => {
   resetRemaining();
-  // gera primeira pergunta
   pickNextQuestion();
   currentIndex = 0;
-  // reseta UI
   score = 0;
   quizSection.classList.remove("hidden");
   resultSection.classList.add("hidden");
@@ -632,7 +716,6 @@ retryBtn.addEventListener("click", () => {
 
 // ---------------------------
 // Compartilhar / salvar imagem do resultado
-// (mantido sem alterações)
 // ---------------------------
 function shareResultAsImage() {
   const node = document.getElementById("result-section");
@@ -644,15 +727,20 @@ function shareResultAsImage() {
 
       const fileName = `teste-biblia-${Date.now()}.png`;
 
-      if (navigator.canShare && navigator.canShare({ files: [new File([blob], fileName, { type: blob.type })] })) {
+      if (
+        navigator.canShare &&
+        navigator.canShare({ files: [new File([blob], fileName, { type: blob.type })] })
+      ) {
         const file = new File([blob], fileName, { type: blob.type });
-        navigator.share({
-          files: [file],
-          title: "Meu resultado - Teste da Bíblia",
-          text: "Veja meu resultado no Teste da Bíblia!"
-        }).catch(() => {
-          downloadBlob(blob, fileName);
-        });
+        navigator
+          .share({
+            files: [file],
+            title: "Meu resultado - Teste da Bíblia",
+            text: "Veja meu resultado no Teste da Bíblia!"
+          })
+          .catch(() => {
+            downloadBlob(blob, fileName);
+          });
       } else {
         downloadBlob(blob, fileName);
       }
@@ -684,5 +772,5 @@ document.addEventListener("click", (e) => {
 // Inicialização
 // ---------------------------
 resetRemaining();
-pickNextQuestion(); // gera a primeira pergunta adaptativa
+pickNextQuestion();
 renderQuestion();
