@@ -19,73 +19,37 @@
       align-items: center;
       justify-content: center;
       overflow: visible;
-      background-color: #020617; /* bg-slate-950 de leve por baixo */
+      background-color: #020617;
     }
 
-    /* Cores e brilho por nível */
-    .badge-iniciante {
-      border: 4px solid #ef4444;
-      box-shadow: 0 0 40px 0 rgba(248, 113, 113, 0.5);
-      background: radial-gradient(circle at center,
-        rgba(248, 113, 113, 0.22) 0,
-        transparent 60%);
-    }
+    /* Cores da badge */
+    .badge-iniciante { border: 4px solid #ef4444; box-shadow: 0 0 40px rgba(248, 113, 113, 0.5); }
+    .badge-intermediario { border: 4px solid #facc15; box-shadow: 0 0 40px rgba(250, 204, 21, 0.5); }
+    .badge-avancado { border: 4px solid #22c55e; box-shadow: 0 0 40px rgba(34, 197, 94, 0.5); }
+    .badge-mestre { border: 4px solid #a855f7; box-shadow: 0 0 40px rgba(168, 85, 247, 0.6); }
 
-    .badge-intermediario {
-      border: 4px solid #facc15;
-      box-shadow: 0 0 40px 0 rgba(250, 204, 21, 0.5);
-      background: radial-gradient(circle at center,
-        rgba(250, 204, 21, 0.22) 0,
-        transparent 60%);
-    }
-
-    .badge-avancado {
-      border: 4px solid #22c55e;
-      box-shadow: 0 0 40px 0 rgba(34, 197, 94, 0.5);
-      background: radial-gradient(circle at center,
-        rgba(34, 197, 94, 0.22) 0,
-        transparent 60%);
-    }
-
-    .badge-mestre {
-      border: 4px solid #a855f7;
-      box-shadow: 0 0 40px 0 rgba(168, 85, 247, 0.6);
-      background: radial-gradient(circle at center,
-        rgba(168, 85, 247, 0.22) 0,
-        transparent 60%);
-    }
-
-    /* Animação do brilho geral */
+    /* glow */
     @keyframes pulse-glow {
       0%   { transform: scale(1); }
       50%  { transform: scale(1.03); }
       100% { transform: scale(1); }
     }
+    .badge-animated { animation: pulse-glow 3s ease-in-out infinite; }
 
-    .badge-animated {
-      animation: pulse-glow 3s ease-in-out infinite;
-    }
-
-    /* Troféu no centro */
+    /* Troféu */
     #badge-trophy {
       font-size: 2.75rem;
-      color: #ffd700; /* dourado */
+      color: #ffd700;
       filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.6));
       animation: trophy-pop 1.4s ease-in-out infinite alternate;
     }
 
     @keyframes trophy-pop {
-      0% {
-        transform: translateY(4px) scale(0.97);
-        opacity: 0.9;
-      }
-      100% {
-        transform: translateY(-4px) scale(1.03);
-        opacity: 1;
-      }
+      0%   { transform: translateY(4px) scale(0.97); opacity: 0.9; }
+      100% { transform: translateY(-4px) scale(1.03); opacity: 1; }
     }
 
-    /* Partículas girando ao redor */
+    /* partículas */
     .badge-base::before,
     .badge-base::after {
       content: "";
@@ -100,14 +64,8 @@
         radial-gradient(circle at 70% 75%, rgba(255,255,255,0.12) 0, transparent 40%);
       opacity: 0.8;
     }
-
-    .badge-base::before {
-      animation: spin-particles 24s linear infinite;
-    }
-
-    .badge-base::after {
-      animation: spin-particles 32s linear infinite reverse;
-    }
+    .badge-base::before { animation: spin-particles 24s linear infinite; }
+    .badge-base::after { animation: spin-particles 32s linear infinite reverse; }
 
     @keyframes spin-particles {
       from { transform: rotate(0deg); }
@@ -119,6 +77,7 @@
 <body class="bg-slate-950 text-slate-50">
   <main class="min-h-screen flex items-center justify-center px-4">
     <div class="w-full max-w-2xl bg-slate-900/80 border border-slate-800 rounded-2xl p-6 shadow-xl shadow-emerald-500/20">
+
       <header class="mb-4 flex items-center justify-between gap-4">
         <div>
           <h1 class="text-xl md:text-2xl font-bold">Teste da Bíblia</h1>
@@ -126,16 +85,14 @@
             20 perguntas rápidas sobre Antigo e Novo Testamento.
           </p>
         </div>
-        <a href="index.html" class="text-xs text-slate-400 hover:text-emerald-300">
-          ⬅ Voltar
-        </a>
+        <a href="index.html" class="text-xs text-slate-400 hover:text-emerald-300">⬅ Voltar</a>
       </header>
 
       <!-- Progresso -->
       <div class="mb-4">
         <div class="flex justify-between text-xs text-slate-400 mb-1">
           <span id="progress-text">Pergunta 1 de 20</span>
-          <span id="score-preview">Respostas corretas: 0</span>
+         <!--  <span id="score-preview">Respostas corretas: 0</span> -->
         </div>
         <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
           <div id="progress-bar" class="h-2 bg-emerald-500 w-0"></div>
@@ -144,12 +101,15 @@
 
       <!-- Área das perguntas -->
       <section id="quiz-section">
+
+        <!-- 🔥 TIMER ADICIONADO AQUI -->
+        <p id="timer" class="text-xs text-amber-400 mb-2">⏳ 20s</p>
+
         <h2 id="question-text" class="text-base md:text-lg font-semibold mb-4">
           Carregando pergunta...
         </h2>
-        <form id="options-form" class="space-y-2 mb-4">
-          <!-- opções serão inseridas via JS -->
-        </form>
+
+        <form id="options-form" class="space-y-2 mb-4"></form>
 
         <p id="error-message" class="text-xs text-red-400 mb-2 hidden">
           Escolha uma alternativa para continuar.
@@ -175,46 +135,29 @@
       <!-- Resultado -->
       <section id="result-section" class="hidden">
         <h2 class="text-xl font-bold mb-2">Seu resultado</h2>
-        <p class="text-sm text-slate-300 mb-6">
-          Veja sua pontuação, nível e áreas para aprofundar.
-        </p>
+        <p class="text-sm text-slate-300 mb-6">Veja sua pontuação, nível e áreas para aprofundar.</p>
 
-        <!-- BLOCO GAMIFICADO -->
+        <!-- GAMIFICAÇÃO -->
         <div id="badge-wrapper" class="flex flex-col items-center mb-6">
-          <div
-            id="badge-icon"
-            class="badge-base badge-mestre badge-animated mx-auto">
-            <!-- folhas / louros -->
+          <div id="badge-icon" class="badge-base badge-mestre badge-animated mx-auto">
             <div class="absolute -left-6 text-3xl select-none">🌿</div>
             <div class="absolute -right-6 text-3xl select-none">🌿</div>
-
-            <!-- troféu animado -->
             <div id="badge-trophy">🏆</div>
 
-            <!-- faixa com o nível -->
-            <div
-              id="badge-ribbon"
+            <div id="badge-ribbon"
               class="absolute -bottom-4 px-4 py-1 rounded-full bg-purple-500 text-[10px] font-semibold tracking-[0.2em] uppercase">
               <span id="badge-label">MESTRE</span>
             </div>
           </div>
 
-          <p id="final-score" class="mt-8 text-4xl font-extrabold text-slate-50">
-            0 / 1000
-          </p>
-          <p id="final-level" class="text-sm font-medium text-slate-300 mt-1">
-            Nível -
-          </p>
-          <p class="text-xs text-slate-500 mt-1">
-            Essa é a sua pontuação no Teste da Bíblia.
-          </p>
+          <p id="final-score" class="mt-8 text-4xl font-extrabold">0 / 1000</p>
+          <p id="final-level" class="text-sm text-slate-300 mt-1">Nível -</p>
+          <p class="text-xs text-slate-500 mt-1">Essa é a sua pontuação no Teste da Bíblia.</p>
         </div>
 
         <div class="border border-slate-800 rounded-xl p-3 mb-4 text-sm">
           <p class="text-xs text-slate-400 mb-1">Diagnóstico rápido</p>
-          <p id="diagnostic-text" class="text-slate-200">
-            Carregando análise...
-          </p>
+          <p id="diagnostic-text" class="text-slate-200">Carregando análise...</p>
         </div>
 
         <div class="border border-slate-800 rounded-xl p-3 mb-4 text-sm">
@@ -222,7 +165,6 @@
           <ul id="study-tips" class="list-disc list-inside text-slate-200 space-y-1"></ul>
         </div>
 
-        <!-- Botão de compartilhar -->
         <button
           id="share-btn"
           class="w-full mb-3 px-4 py-3 rounded-xl bg-sky-500 text-slate-950 font-semibold text-sm hover:bg-sky-400 transition flex items-center justify-center gap-2">
@@ -230,13 +172,12 @@
         </button>
 
         <div class="flex flex-col sm:flex-row gap-3 mt-2">
-          <button
-            id="retry-btn"
+          <button id="retry-btn"
             class="flex-1 px-4 py-2 rounded-xl bg-emerald-500 text-slate-950 font-semibold text-sm hover:bg-emerald-400 transition">
             Refazer o teste
           </button>
           <a href="index.html"
-             class="flex-1 px-4 py-2 rounded-xl border border-slate-700 text-sm text-slate-200 hover:border-emerald-400 hover:text-emerald-300 text-center flex items-center justify-center">
+            class="flex-1 px-4 py-2 rounded-xl border border-slate-700 text-sm text-slate-200 hover:border-emerald-400 hover:text-emerald-300 text-center flex items-center justify-center">
             Voltar para a página inicial
           </a>
         </div>
