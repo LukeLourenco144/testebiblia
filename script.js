@@ -146,7 +146,7 @@ const allQuestions = [
     difficulty: "iniciante"
   },
 
-  // + perguntas novas
+  // + perguntas atuais adicionais
   {
     question: "Quem era irmão de Moisés que falava por ele?",
     options: ["Josué", "Calebe", "Arão", "Efraim"],
@@ -279,8 +279,277 @@ const allQuestions = [
     answerIndex: 1,
     category: "Sabedoria / Literatura",
     difficulty: "iniciante"
+  },
+
+  // -----------------------------
+  // Novas perguntas (até chegar em 80)
+  // Alternando entre intermediário e avançado
+  // -----------------------------
+
+  {
+    question: "Qual patriarca teve o nome mudado para Israel?",
+    options: ["Abraão", "Isaque", "Jacó", "José"],
+    answerIndex: 2,
+    category: "Gênesis / Patriarcas",
+    difficulty: "intermediário"
+  },
+  {
+    question: "Em qual livro encontramos detalhadamente a história de Davi e Golias?",
+    options: ["1 Samuel", "2 Samuel", "1 Reis", "Juízes"],
+    answerIndex: 0,
+    category: "História de Israel",
+    difficulty: "avançado"
+  },
+  {
+    question: "Qual profeta anunciou que um menino nos seria dado e seria chamado 'Maravilhoso Conselheiro'?",
+    options: ["Jeremias", "Isaías", "Miquéias", "Zacarias"],
+    answerIndex: 1,
+    category: "Profetas",
+    difficulty: "intermediário"
+  },
+  {
+    question: "Qual rei de Judá restaurou a lei após encontrar o Livro da Lei no templo?",
+    options: ["Ezequias", "Josias", "Manassés", "Jeoaquim"],
+    answerIndex: 1,
+    category: "História de Israel",
+    difficulty: "avançado"
+  },
+  {
+    question: "Em Romanos, Paulo diz que 'o justo viverá pela fé'. De qual profeta do AT ele cita essa frase?",
+    options: ["Habacuque", "Ageu", "Malaquias", "Amós"],
+    answerIndex: 0,
+    category: "Cartas (Epístolas)",
+    difficulty: "intermediário"
+  },
+  {
+    question: "Qual concílio registrado em Atos 15 tratou principalmente sobre qual tema?",
+    options: [
+      "Jejum obrigatório",
+      "Circuncisão dos gentios",
+      "Uso de dons espirituais",
+      "Construção do templo"
+    ],
+    answerIndex: 1,
+    category: "História da Igreja (Atos)",
+    difficulty: "avançado"
+  },
+  {
+    question: "Qual profeta confrontou o rei Davi sobre seu pecado com Bate-Seba?",
+    options: ["Natã", "Gade", "Samuel", "Elias"],
+    answerIndex: 0,
+    category: "História de Israel",
+    difficulty: "intermediário"
+  },
+  {
+    question: "Qual carta do Novo Testamento enfatiza a fé demonstrada pelas obras, usando o exemplo de Abraão?",
+    options: ["Romanos", "Hebreus", "Tiago", "Gálatas"],
+    answerIndex: 2,
+    category: "Cartas (Epístolas)",
+    difficulty: "avançado"
+  },
+  {
+    question: "Qual livro poético é uma coleção de cânticos de amor e pode ser lido como uma metáfora do amor de Deus?",
+    options: ["Eclesiastes", "Cantares de Salomão", "Jó", "Lamentações"],
+    answerIndex: 1,
+    category: "Sabedoria / Literatura",
+    difficulty: "intermediário"
+  },
+  {
+    question: "Quem foi o profeta que declarou: 'Eu e a minha casa serviremos ao Senhor'?",
+    options: ["Moisés", "Josué", "Samuel", "Davi"],
+    answerIndex: 1,
+    category: "História de Israel",
+    difficulty: "avançado"
+  },
+  {
+    question: "Em qual carta Paulo fala detalhadamente sobre os frutos do Espírito?",
+    options: ["Gálatas", "Efésios", "Filipenses", "Colossenses"],
+    answerIndex: 0,
+    category: "Cartas (Epístolas)",
+    difficulty: "intermediário"
+  },
+  {
+    question: "Qual profeta viu o Senhor assentado sobre um alto e sublime trono e declarou 'ai de mim!'?",
+    options: ["Ezequiel", "Isaías", "Jeremias", "Miquéias"],
+    answerIndex: 1,
+    category: "Profetas",
+    difficulty: "avançado"
+  },
+  {
+    question: "Qual livro encerra o Pentateuco narrando a morte de Moisés?",
+    options: ["Levítico", "Números", "Deuteronômio", "Josué"],
+    answerIndex: 2,
+    category: "Pentateuco / Êxodo",
+    difficulty: "intermediário"
+  },
+  {
+    question: "Qual rei é conhecido por ter composto muitos provérbios e também pelo livro de Eclesiastes?",
+    options: ["Davi", "Salomão", "Saul", "Roboão"],
+    answerIndex: 1,
+    category: "Sabedoria / Literatura",
+    difficulty: "avançado"
+  },
+  {
+    question: "Em qual livro encontramos o relato da visão das quatro bestas simbólicas e do 'Filho do Homem'?",
+    options: ["Isaías", "Jeremias", "Daniel", "Ezequiel"],
+    answerIndex: 2,
+    category: "Profetas / Exílio",
+    difficulty: "intermediário"
+  },
+  {
+    question: "Quantos dias Noé ficou aproximadamente dentro da arca até que as águas baixassem?",
+    options: ["40 dias", "150 dias", "1 ano", "7 dias"],
+    answerIndex: 2,
+    category: "Gênesis / Início da Bíblia",
+    difficulty: "avançado"
+  },
+  {
+    question: "Em qual carta Paulo fala sobre a armadura de Deus?",
+    options: ["1 Coríntios", "Efésios", "Filipenses", "Colossenses"],
+    answerIndex: 1,
+    category: "Cartas (Epístolas)",
+    difficulty: "intermediário"
+  },
+  {
+    question: "Qual profeta casou-se com uma mulher adúltera como sinal profético do relacionamento de Deus com Israel?",
+    options: ["Oséias", "Joel", "Amós", "Miqueias"],
+    answerIndex: 0,
+    category: "Profetas",
+    difficulty: "avançado"
+  },
+  {
+    question: "Quem é chamado de 'amigo de Deus' no Antigo Testamento?",
+    options: ["Moisés", "Abraão", "Davi", "Jacó"],
+    answerIndex: 1,
+    category: "Gênesis / Patriarcas",
+    difficulty: "intermediário"
+  },
+  {
+    question: "Qual dos evangelhos foi escrito por um médico e enfatiza muitos detalhes históricos?",
+    options: ["Mateus", "Marcos", "Lucas", "João"],
+    answerIndex: 2,
+    category: "Evangelhos",
+    difficulty: "avançado"
+  },
+  {
+    question: "Quem foi o primeiro mártir cristão mencionado em Atos?",
+    options: ["Tiago", "Estevão", "Pedro", "João"],
+    answerIndex: 1,
+    category: "História da Igreja (Atos)",
+    difficulty: "intermediário"
+  },
+  {
+    question: "Qual profeta recebeu a ordem de profetizar para o rei Acabe e predisse a seca em Israel?",
+    options: ["Elias", "Eliseu", "Jeremias", "Isaías"],
+    answerIndex: 0,
+    category: "Profetas",
+    difficulty: "avançado"
+  },
+  {
+    question: "Qual das cartas paulinas trata extensamente de questões práticas da igreja em Corinto, incluindo dons espirituais?",
+    options: ["Gálatas", "1 Coríntios", "Romanos", "Tito"],
+    answerIndex: 1,
+    category: "Cartas (Epístolas)",
+    difficulty: "intermediário"
+  },
+  {
+    question: "Qual profeta teve seu livro composto por apenas quatro capítulos e fala sobre o avivamento em Nínive?",
+    options: ["Ageu", "Jonas", "Obadias", "Naum"],
+    answerIndex: 1,
+    category: "Profetas",
+    difficulty: "avançado"
+  },
+  {
+    question: "Qual personagem bíblico é conhecido por sua grande paciência e sofrimento, mantendo-se fiel a Deus?",
+    options: ["Jó", "Elias", "Neemias", "Esdras"],
+    answerIndex: 0,
+    category: "Sabedoria / Literatura",
+    difficulty: "intermediário"
+  },
+  {
+    question: "Em qual livro encontramos a expressão 'debaixo do sol' repetida muitas vezes, refletindo sobre a vaidade da vida?",
+    options: ["Provérbios", "Eclesiastes", "Salmos", "Jó"],
+    answerIndex: 1,
+    category: "Sabedoria / Literatura",
+    difficulty: "avançado"
+  },
+  {
+    question: "Qual líder reconstruiu os muros de Jerusalém após o exílio babilônico?",
+    options: ["Neemias", "Esdras", "Zorobabel", "Josué, o sumo sacerdote"],
+    answerIndex: 0,
+    category: "História de Israel",
+    difficulty: "intermediário"
+  },
+  {
+    question: "Qual profeta tem um livro com cinco capítulos que expressam profunda lamentação pela queda de Jerusalém?",
+    options: ["Lamentações", "Malaquias", "Ageu", "Habacuque"],
+    answerIndex: 0,
+    category: "Profetas / Exílio",
+    difficulty: "avançado"
+  },
+  {
+    question: "Em Apocalipse, quantas igrejas da Ásia recebem cartas específicas?",
+    options: ["3", "5", "7", "12"],
+    answerIndex: 2,
+    category: "Apocalipse / Escatologia",
+    difficulty: "intermediário"
+  },
+  {
+    question: "Qual imagem é usada em Apocalipse para representar Jesus no início do livro?",
+    options: [
+      "Um leão apenas",
+      "Um cordeiro como tendo sido morto",
+      "Um anjo poderoso",
+      "Um cavaleiro vermelho"
+    ],
+    answerIndex: 1,
+    category: "Apocalipse / Escatologia",
+    difficulty: "avançado"
+  },
+  {
+    question: "Qual personagem do livro de Atos é conhecido por ser um grande incentivador, apelidado de 'filho da consolação'?",
+    options: ["Barnabé", "Silas", "Timóteo", "Marcos"],
+    answerIndex: 0,
+    category: "História da Igreja (Atos)",
+    difficulty: "intermediário"
+  },
+  {
+    question: "Qual carta do Novo Testamento destaca Cristo como sumo sacerdote segundo a ordem de Melquisedeque?",
+    options: ["Hebreus", "Colossenses", "Romanos", "1 Pedro"],
+    answerIndex: 0,
+    category: "Cartas (Epístolas)",
+    difficulty: "avançado"
+  },
+  {
+    question: "Qual rei de Israel pediu uma prova com o velo de lã para confirmar a vontade de Deus?",
+    options: ["Gideão", "Saul", "Davi", "Jeú"],
+    answerIndex: 0,
+    category: "História de Israel",
+    difficulty: "intermediário"
+  },
+  {
+    question: "Qual profeta anunciou o nascimento do Messias em Belém de Efrata?",
+    options: ["Miquéias", "Ageu", "Zacarias", "Malaquias"],
+    answerIndex: 0,
+    category: "Profetas",
+    difficulty: "avançado"
+  },
+  {
+    question: "Em qual carta encontramos a famosa descrição do amor que 'tudo sofre, tudo crê, tudo espera, tudo suporta'?",
+    options: ["Romanos 8", "1 Coríntios 13", "Efésios 4", "Filipenses 2"],
+    answerIndex: 1,
+    category: "Cartas (Epístolas)",
+    difficulty: "intermediário"
+  },
+  {
+    question: "Qual profeta teve sua boca purificada com uma brasa viva tirada do altar?",
+    options: ["Ezequiel", "Isaías", "Jeremias", "Zacarias"],
+    answerIndex: 1,
+    category: "Profetas",
+    difficulty: "avançado"
   }
 ];
+
 
 // Número de perguntas por teste
 const QUESTIONS_PER_TEST = 20;
