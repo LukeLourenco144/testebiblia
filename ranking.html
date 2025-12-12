@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Ranking - Teste da Bíblia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Ranking mundial do Teste da Bíblia"
+    />
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-slate-950 text-slate-50">
+    <main class="min-h-screen flex items-center justify-center px-4 py-8">
+      <div
+        class="w-full max-w-4xl relative bg-gradient-to-b from-slate-900/90 to-slate-950 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-[0_0_80px_rgba(16,185,129,0.15)] overflow-hidden"
+      >
+        <!-- Glow decorativo -->
+        <div
+          class="pointer-events-none absolute -top-32 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full bg-emerald-500/10 blur-3xl"
+        ></div>
+
+        <!-- Cabeçalho -->
+        <header class="relative z-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6">
+          <div>
+            <div
+              class="inline-flex items-center gap-2 rounded-full bg-emerald-500/10 border border-emerald-500/30 px-3 py-1 mb-2"
+            >
+              <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span class="text-[11px] font-medium text-emerald-300">
+                Ranking Global · Teste da Bíblia
+              </span>
+            </div>
+            <h1 class="text-2xl md:text-3xl font-bold tracking-tight">
+              Quem mais conhece a Bíblia?
+            </h1>
+            <p class="text-xs md:text-sm text-slate-400 mt-1">
+              Veja o top do Teste da Bíblia em tempo real e tente bater o
+              recorde. <br class="hidden sm:block" />
+              Compartilhe com seus amigos da igreja e descubram quem manda
+              melhor na Palavra.
+            </p>
+          </div>
+
+          <div class="flex flex-wrap gap-2 justify-start sm:justify-end">
+            <a
+              href="quiz.html"
+              class="inline-flex items-center justify-center rounded-xl bg-emerald-500 px-4 py-2 text-xs sm:text-sm font-semibold text-slate-900 shadow-lg shadow-emerald-500/30 hover:bg-emerald-400 transition"
+            >
+              🎯 Fazer o teste agora
+            </a>
+            <button
+              id="btn-share-ranking"
+              class="inline-flex items-center justify-center rounded-xl border border-slate-700 bg-slate-900/70 px-4 py-2 text-xs sm:text-sm font-medium text-slate-200 hover:border-emerald-400 hover:text-emerald-300 transition"
+            >
+              📤 Compartilhar ranking
+            </button>
+            <a
+              href="index.html"
+              class="inline-flex items-center justify-center rounded-xl text-[11px] sm:text-xs text-slate-400 hover:text-emerald-300 underline-offset-2 hover:underline"
+            >
+              ← Voltar para a página inicial
+            </a>
+          </div>
+        </header>
+
+        <!-- Info do próprio usuário -->
+        <section
+          id="meu-resumo"
+          class="relative z-10 hidden mb-5 rounded-2xl border border-emerald-500/40 bg-gradient-to-r from-emerald-500/10 to-slate-900/80 px-4 py-3 text-xs sm:text-sm flex items-center justify-between gap-3"
+        >
+          <div>
+            <p class="font-semibold text-emerald-300 text-xs">
+              Seu último resultado no ranking
+            </p>
+            <p class="text-slate-100 text-xs sm:text-sm" id="meu-resumo-texto"></p>
+          </div>
+          <a
+            href="quiz.html"
+            class="whitespace-nowrap text-[11px] sm:text-xs font-semibold text-emerald-200 hover:text-emerald-100 underline underline-offset-2"
+          >
+            Melhorar meu score →
+          </a>
+        </section>
+
+        <!-- Estado geral -->
+        <div
+          id="status-box"
+          class="relative z-10 flex items-center justify-between gap-2 text-[11px] sm:text-xs text-slate-400 mb-3"
+        >
+          <div class="flex items-center gap-2">
+            <span
+              class="inline-flex h-2 w-2 rounded-full bg-emerald-400 animate-pulse"
+            ></span>
+            <span id="status-text">Carregando ranking...</span>
+          </div>
+          <span class="hidden sm:inline text-slate-500">
+            Dica: use o ranking como desafio para célula ou discipulado.
+          </span>
+        </div>
+
+        <!-- Destaque Top 3 -->
+        <section
+          id="top3-wrapper"
+          class="relative z-10 grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4"
+        >
+          <!-- Cards preenchidos via JS -->
+        </section>
+
+        <!-- Tabela de ranking -->
+        <div
+          class="relative z-10 overflow-hidden rounded-2xl border border-slate-800/80 bg-slate-950/60"
+        >
+          <div class="overflow-x-auto">
+            <table class="min-w-full text-xs sm:text-sm">
+              <thead>
+                <tr
+                  class="border-b border-slate-800 bg-slate-900/70 text-slate-400 uppercase text-[10px] sm:text-xs"
+                >
+                  <th class="py-2 pr-2 pl-3 text-left">Posição</th>
+                  <th class="py-2 pr-2 text-left">Nome</th>
+                  <th class="py-2 pr-2 text-center">Score</th>
+                  <th class="py-2 pr-2 text-center">Nível</th>
+                  <th class="py-2 pl-2 pr-3 text-right">Data</th>
+                </tr>
+              </thead>
+              <tbody id="ranking-body">
+                <!-- linhas via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Rodapé -->
+        <footer
+          class="relative z-10 mt-5 text-[11px] sm:text-xs text-slate-500 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2"
+        >
+          <p>
+            Envie o link
+            <span class="text-emerald-300 font-medium"
+              >testebiblia.com.br/ranking.html</span
+            >
+            nos grupos da igreja e descubram quem sobe para o Top 10. 🏆
+          </p>
+          <p class="text-slate-600">
+            Feito com carinho para fortalecer o conhecimento da Palavra. ✝️
+          </p>
+        </footer>
+      </div>
+    </main>
+
+    <script>
+      // === CONFIG ============================================================
+      const RANKING_ENDPOINT =
+        "https://script.google.com/macros/s/AKfycbwGpbTEKSsqsxXufLaAsOD-pHxU9WJSLAjVhQQY23WvzVGZF10Ha00EimK5i9vUD4Sb6g/exec";
+
+      const statusBox = document.getElementById("status-box");
+      const statusText = document.getElementById("status-text");
+      const rankingBody = document.getElementById("ranking-body");
+      const meuResumo = document.getElementById("meu-resumo");
+      const meuResumoTexto = document.getElementById("meu-resumo-texto");
+      const top3Wrapper = document.getElementById("top3-wrapper");
+      const btnShareRanking = document.getElementById("btn-share-ranking");
+
+      const meuNome = (localStorage.getItem("tb_nome") || "").trim();
+
+      // === COMPARTILHAR RANKING =============================================
+      btnShareRanking.addEventListener("click", async () => {
+        const url = window.location.href;
+        const text =
+          "Olha esse ranking do Teste da Bíblia! Veja quem está com o maior score e tenta bater o recorde: " +
+          url;
+
+        if (navigator.share) {
+          try {
+            await navigator.share({
+              title: "Ranking – Teste da Bíblia",
+              text,
+              url,
+            });
+          } catch (e) {
+            // usuário cancelou, tudo bem
+          }
+        } else if (navigator.clipboard) {
+          try {
+            await navigator.clipboard.writeText(url);
+            showTransientStatus(
+              "Link do ranking copiado! Cole no WhatsApp e desafie seus amigos.",
+              "success"
+            );
+          } catch (e) {
+            alert(text);
+          }
+        } else {
+          alert(text);
+        }
+      });
+
+      function showTransientStatus(message, type = "info") {
+        statusBox.classList.remove("hidden");
+        statusText.textContent = message;
+        statusText.classList.remove("text-slate-400", "text-emerald-300", "text-rose-300");
+        if (type === "success") {
+          statusText.classList.add("text-emerald-300");
+        } else if (type === "error") {
+          statusText.classList.add("text-rose-300");
+        } else {
+          statusText.classList.add("text-slate-400");
+        }
+        setTimeout(() => {
+          statusText.classList.remove("text-emerald-300", "text-rose-300");
+          statusText.classList.add("text-slate-400");
+        }, 4000);
+      }
+
+      // === RENDER HELPERS ====================================================
+      function escapeHtml(text) {
+        if (!text) return "";
+        return text
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
+      function medalForPosition(pos) {
+        if (pos === 1) return "🥇";
+        if (pos === 2) return "🥈";
+        if (pos === 3) return "🥉";
+        return "";
+      }
+
+      function levelBadgeClasses(nivel) {
+        if (nivel === "Mestre") {
+          return "bg-purple-500/10 text-purple-300 border border-purple-500/40";
+        }
+        if (nivel === "Avançado") {
+          return "bg-emerald-500/10 text-emerald-300 border border-emerald-500/40";
+        }
+        if (nivel === "Intermediário") {
+          return "bg-yellow-500/10 text-yellow-300 border border-yellow-500/40";
+        }
+        return "bg-red-500/10 text-red-300 border border-red-500/40";
+      }
+
+      // === CARREGAR RANKING ==================================================
+      async function carregarRanking() {
+        try {
+          statusText.textContent = "Carregando ranking...";
+          const url = RANKING_ENDPOINT + "?mode=top";
+
+          // tenta buscar com CORS e sem cache
+          const res = await fetch(url, { method: "GET", mode: "cors", cache: "no-store" });
+
+          // pega texto bruto para permitir debug quando servidor não retorna JSON válido
+          const raw = await res.text();
+          // log para inspeção no console
+          console.debug("Resposta bruta do ranking:", raw);
+
+          if (!res.ok) {
+            throw new Error("Erro ao buscar dados (" + res.status + ")");
+          }
+
+          let data;
+          try {
+            data = JSON.parse(raw);
+          } catch (parseErr) {
+            console.error("Falha ao parsear JSON do ranking:", parseErr);
+            // mostra a primeira parte da resposta para ajudar no debug
+            statusBox.classList.remove("hidden");
+            statusText.textContent =
+              "Resposta inesperada do servidor ao carregar o ranking. Verifique o endpoint.";
+            statusText.classList.add("text-rose-300");
+            throw new Error("Resposta do servidor não é JSON válido");
+          }
+
+          // 👉 aqui tratamos tanto array direto quanto { ranking: [...] }
+          let ranking;
+          if (Array.isArray(data)) {
+            ranking = data;
+          } else if (data && Array.isArray(data.ranking)) {
+            ranking = data.ranking;
+          } else {
+            throw new Error("Formato de resposta inesperado do servidor.");
+          }
+
+          if (!ranking.length) {
+            statusText.textContent =
+              "Ainda não há resultados no ranking. Seja o primeiro a entrar!";
+            return;
+          }
+
+          statusBox.classList.add("hidden");
+          rankingBody.innerHTML = "";
+          top3Wrapper.innerHTML = "";
+
+          let minhaPosicao = null;
+          let meuUltimoScore = null;
+          let meuUltimoNivel = null;
+          let minhaData = null;
+
+          // Top 3 cards
+          ranking.slice(0, 3).forEach((item, index) => {
+            const posicao = index + 1;
+            const nome = item.nome || "–";
+            const score = item.score || 0;
+            const nivel = item.nivel || "–";
+
+            const card = document.createElement("article");
+            card.className =
+              "rounded-2xl border border-slate-800 bg-slate-950/70 px-3 py-3 flex flex-col gap-1 relative overflow-hidden";
+
+            const medal = medalForPosition(posicao);
+
+            card.innerHTML = `
+              <div class="absolute inset-x-0 -top-10 h-20 ${
+                posicao === 1
+                  ? "bg-gradient-to-b from-emerald-500/20 to-transparent"
+                  : posicao === 2
+                  ? "bg-gradient-to-b from-slate-300/20 to-transparent"
+                  : "bg-gradient-to-b from-amber-300/20 to-transparent"
+              } opacity-80 pointer-events-none"></div>
+              <div class="relative flex items-center justify-between gap-2">
+                <div class="inline-flex items-center gap-1.5 rounded-full bg-slate-900/80 border border-slate-700 px-2 py-0.5 text-[10px] font-semibold text-slate-200">
+                  <span>${medal}</span>
+                  <span>${posicao}º lugar</span>
+                </div>
+                <span class="text-[10px] text-slate-400">Score ${score}</span>
+              </div>
+              <div class="relative mt-1">
+                <p class="text-sm font-semibold text-slate-50 truncate">${escapeHtml(
+                  nome
+                )}</p>
+                <div class="mt-1 inline-flex items-center rounded-full px-2 py-0.5 text-[10px] ${levelBadgeClasses(
+                  nivel
+                )}">
+                  ${escapeHtml(nivel)}
+                </div>
+              </div>
+            `;
+            top3Wrapper.appendChild(card);
+          });
+
+          // Corpo da tabela
+          ranking.forEach((item, index) => {
+            const tr = document.createElement("tr");
+
+            const posicao = index + 1;
+            const nome = item.nome || "—";
+            const score = item.score || 0;
+            const nivel = item.nivel || "—";
+            // 👉 usa timestamp (ou dataHora se um dia vier assim)
+            const dataHora = item.timestamp || item.dataHora || "";
+
+            let dataFormatada = "";
+            if (dataHora) {
+              const d = new Date(dataHora);
+              if (!isNaN(d)) {
+                dataFormatada = d.toLocaleDateString("pt-BR", {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "numeric",
+                });
+              }
+            }
+
+            const isMe =
+              meuNome &&
+              nome &&
+              nome.toLowerCase().trim() === meuNome.toLowerCase().trim();
+
+            if (isMe && minhaPosicao === null) {
+              minhaPosicao = posicao;
+              meuUltimoScore = score;
+              meuUltimoNivel = nivel;
+              minhaData = dataFormatada;
+            }
+
+            tr.className =
+              "border-b border-slate-800/60 " +
+              (isMe
+                ? "bg-emerald-500/5"
+                : "hover:bg-slate-900/60 transition-colors");
+
+            tr.innerHTML = `
+              <td class="py-2 pr-2 pl-3 text-left text-slate-400">
+                <span class="inline-flex items-center gap-1">
+                  <span class="text-[11px]">${posicao}º</span>
+                  ${
+                    medalForPosition(posicao)
+                      ? `<span class="text-[13px]">${medalForPosition(
+                          posicao
+                        )}</span>`
+                      : ""
+                  }
+                </span>
+              </td>
+              <td class="py-2 pr-2 text-left">
+                <span class="${
+                  isMe ? "text-emerald-300 font-semibold" : "text-slate-100"
+                }">
+                  ${escapeHtml(nome)}
+                </span>
+              </td>
+              <td class="py-2 pr-2 text-center font-semibold text-slate-100">
+                ${score}
+              </td>
+              <td class="py-2 pr-2 text-center">
+                <span class="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] sm:text-xs ${levelBadgeClasses(
+                  nivel
+                )}">
+                  ${escapeHtml(nivel)}
+                </span>
+              </td>
+              <td class="py-2 pl-2 pr-3 text-right text-slate-400">
+                ${dataFormatada}
+              </td>
+            `;
+
+            rankingBody.appendChild(tr);
+          });
+
+          // Resumo do próprio usuário
+          if (minhaPosicao !== null) {
+            meuResumo.classList.remove("hidden");
+            meuResumoTexto.textContent = `${meuNome} – ${minhaPosicao}º lugar · Score ${meuUltimoScore} · Nível ${meuUltimoNivel}${
+              minhaData ? " · " + minhaData : ""
+            }`;
+          } else if (meuNome) {
+            meuResumo.classList.remove("hidden");
+            meuResumoTexto.textContent =
+              meuNome +
+              " – você ainda não apareceu no ranking. Faça o teste e mande bem para entrar na lista!";
+          }
+        } catch (err) {
+          console.error(err);
+          statusBox.classList.remove("hidden");
+          statusText.textContent =
+            "Não foi possível carregar o ranking agora. Tente novamente mais tarde.";
+          statusText.classList.add("text-rose-300");
+        }
+      }
+
+      carregarRanking();
+    </script>
+  </body>
+</html>

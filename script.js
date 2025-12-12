@@ -285,7 +285,6 @@ const allQuestions = [
   // Novas perguntas (até chegar em 80)
   // Alternando entre intermediário e avançado
   // -----------------------------
-
   {
     question: "Qual patriarca teve o nome mudado para Israel?",
     options: ["Abraão", "Isaque", "Jacó", "José"],
@@ -550,9 +549,13 @@ const allQuestions = [
   }
 ];
 
-
 // Número de perguntas por teste
 const QUESTIONS_PER_TEST = 20;
+
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// URL do App Script para salvar ranking
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+const RANKING_ENDPOINT = "https://script.google.com/macros/s/AKfycbwGpbTEKSsqsxXufLaAsOD-pHxU9WJSLAjVhQQY23WvzVGZF10Ha00EimK5i9vUD4Sb6g/exec";
 
 // pesos por dificuldade (para o score 0–1000)
 function getDifficultyWeight(diff) {
@@ -580,6 +583,12 @@ let currentIndex = 0;
 let score = 0; // score final normalizado 0–1000
 let currentDifficultyIndex = 1; // começa em intermediário
 
+// guarda o nível textual (pra enviar pro ranking)
+let lastLevelName = "";
+
+// ---------------------------
+// Funções de seleção de perguntas
+// ---------------------------
 function resetRemaining() {
   remainingByDifficulty = {
     iniciante: shuffle(allQuestions.filter(q => q.difficulty === "iniciante")),
@@ -780,12 +789,196 @@ prevBtn.addEventListener("click", () => {
 });
 
 // ---------------------------
-// Cálculo do resultado (score 0–1000 + badge)
+// Função para enviar resultado ao ranking (Google Sheets)
 // ---------------------------
-function calculateResult() {
-  // ---------------------------
+function sendResultToRanking(name, scoreValue, levelName) {
+  if (!RANKING_ENDPOINT || RANKING_ENDPOINT.includes("SEU_ID_AQUI")) return;
+
+  const payload = {
+    nome: name,
+    score: scoreValue,
+    nivel: levelName,
+    origem: "TesteBiblia",
+    dataHora: new Date().toISOString()
+  };
+
+  // usa no-cors só pra garantir que não quebre o front (não precisa ler resposta)
+  fetch(RANKING_ENDPOINT, {
+    method: "POST",
+    mode: "no-cors",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(payload)
+  }).catch((err) => {
+    console.error("Erro ao enviar pro ranking:", err);
+  });
+}
+
+// ---------------------------
+// Função para abrir modal bonito de nome
+
+function openNameModal(onConfirm) {
+  let existingModal = document.getElementById("name-modal");
+  if (existingModal) existingModal.remove();
+
+  const modal = document.createElement("div");
+  modal.id = "name-modal";
+  modal.className =
+    "fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-[9999]";
+
+  modal.innerHTML = `
+    <div class="bg-slate-900 w-[90%] max-w-md rounded-2xl p-6 border border-slate-700 shadow-2xl animate-fadeIn">
+      <h2 class="text-xl font-bold text-center mb-3">Entrar no Ranking</h2>
+      <p class="text-slate-300 text-center mb-4">
+        Digite seu nome ou apelido para entrar no ranking:
+      </p>
+
+      <input id="name-input"
+        type="text"
+        class="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-emerald-400"
+        placeholder="Ex: Lucas Almeida"
+      />
+
+      <div class="mt-6 flex gap-3">
+        <button id="cancel-name"
+          class="flex-1 py-3 rounded-xl bg-slate-700 text-white hover:bg-slate-600 transition">
+          Cancelar
+        </button>
+
+        <button id="confirm-name"
+          class="flex-1 py-3 rounded-xl bg-emerald-600 text-white hover:bg-emerald-500 transition">
+          Confirmar
+        </button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  document.getElementById("confirm-name").onclick = () => {
+    const name = document.getElementById("name-input").value.trim();
+    if (name.length < 2) return alert("Digite um nome válido.");
+    modal.remove();
+    onConfirm(name);
+  };
+
+  document.getElementById("cancel-name").onclick = () => modal.remove();
+}
+
+
+// ---------------------------
+// Loader Big Tech
+// ---------------------------
+function showLoading() {
+  let loading = document.getElementById("loading-overlay");
+  if (!loading) {
+    loading = document.createElement("div");
+    loading.id = "loading-overlay";
+    loading.className =
+      "fixed inset-0 bg-black/70 backdrop-blur-sm flex flex-col items-center justify-center z-[99999]";
+    loading.innerHTML = `
+      <div class="w-12 h-12 border-4 border-emerald-400 border-t-transparent rounded-full animate-spin"></div>
+      <p class="text-slate-300 mt-4">Enviando resultado...</p>
+    `;
+    document.body.appendChild(loading);
+  }
+}
+
+function hideLoading() {
+  const loading = document.getElementById("loading-overlay");
+  if (loading) loading.remove();
+}
+
+// ---------------------------
+// Confete Big Tech
+// ---------------------------
+function confettiExplosion() {
+  const duration = 2000;
+  const end = Date.now() + duration;
+
+  (function frame() {
+    confetti({
+      particleCount: 5,
+      angle: 60,
+      spread: 55,
+      origin: { x: 0 }
+    });
+    confetti({
+      particleCount: 5,
+      angle: 120,
+      spread: 55,
+      origin: { x: 1 }
+    });
+
+    if (Date.now() < end) requestAnimationFrame(frame);
+  })();
+}
+
+// ---------------------------
+// Enviar para ranking + avatar + redirecionar
+// ---------------------------
+function sendToRankingFinal(name, scoreValue, levelName) {
+  const avatar = name
+    .split(" ")
+    .map(n => n[0].toUpperCase())
+    .join("")
+    .slice(0, 2);
+
+  const payload = {
+    nome: name,
+    score: scoreValue,
+    nivel: levelName,
+    avatar: avatar,
+    origem: "TesteBiblia",
+    dataHora: new Date().toISOString()
+  };
+
+  showLoading();
+
+  fetch(RANKING_ENDPOINT, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  })
+    .then(() => {
+      setTimeout(() => {
+        hideLoading();
+        confettiExplosion();
+        window.location.href = "ranking.html";
+      }, 800);
+    })
+    .catch(() => {
+      hideLoading();
+      alert("Erro ao enviar. Tente novamente.");
+    });
+}
+
+// ---------------------------
+// Alterar botão "Enviar resultado"
+// ---------------------------
+document.addEventListener("DOMContentLoaded", () => {
+  const sendBtn = document.getElementById("send-ranking-btn");
+  if (sendBtn) {
+    sendBtn.className =
+      "w-full py-3 mt-4 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-400 hover:opacity-90 text-black font-semibold flex items-center justify-center gap-2 transition-transform hover:scale-[1.02]";
+    sendBtn.innerHTML = `🚀 Enviar resultado`;
+
+    sendBtn.addEventListener("click", () => {
+      openNameModal((name) => {
+        localStorage.setItem("tb_nome", name);
+        sendToRankingFinal(name, score, lastLevelName);
+      });
+    });
+  }
+});
+
+
+// ---------------------------
 // Cálculo do resultado (score 0–1000 + badge com efeitos)
 // ---------------------------
+function calculateResult() {
   let rawScore = 0;
   let maxScore = 0;
   const categoryStats = {};
@@ -831,6 +1024,9 @@ function calculateResult() {
     badgeText = "Mestre";
     ribbonBg = "#a855f7"; // purple-500
   }
+
+  // guarda nível pra poder enviar pro ranking
+  lastLevelName = levelName;
 
   // Atualiza elementos principais
   finalScoreEl.textContent = `${score} / 1000`;
@@ -892,7 +1088,7 @@ function calculateResult() {
     )}.`;
   }
 
-  // ---------- Sugestões de estudo (igual antes) ----------
+  // ---------- Sugestões de estudo ----------
   studyTipsEl.innerHTML = "";
 
   if (
@@ -962,6 +1158,25 @@ function calculateResult() {
 
   const shareBtn = document.getElementById("share-btn");
   if (shareBtn) shareBtn.classList.remove("hidden");
+
+  // ---------------------------
+  // Pergunta o nome e envia pro ranking
+  // ---------------------------
+ // try {
+ //   const storedName = localStorage.getItem("tb_nome") || "";
+ //   const nome = prompt(
+ //   "Para entrar no ranking do Teste da Bíblia, digite seu nome (ou apelido):",
+ //    storedName
+ //  );
+
+ //   if (nome && nome.trim().length >= 2) {
+ //     const cleanName = nome.trim();
+ //     localStorage.setItem("tb_nome", cleanName);
+ //     sendResultToRanking(cleanName, score, lastLevelName);
+ //   }
+ // } catch (err) {
+ //   console.error("Erro ao capturar nome para ranking:", err);
+ // }
 }
 
 function addTip(text) {
