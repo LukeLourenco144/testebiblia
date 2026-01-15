@@ -1,0 +1,23 @@
+# robots.txt for Teste da Bíblia
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://testebiblia.com.br/sitemap.xml
+
+# Allow all major search engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+# Crawl delay to be respectful
+Crawl-delay: 1
