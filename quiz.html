@@ -109,8 +109,13 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
+  <!-- Quick Win #7: Theme System -->
+  <script>
+    const theme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', theme);
+  </script>
 
-  <!-- Estilos da badge gamificada -->
+  <!-- Estilos da badge gamificada e Quick Wins -->
   <style>
     /* Base da badge (círculo) */
     .badge-base {
@@ -174,10 +179,109 @@
       from { transform: rotate(0deg); }
       to   { transform: rotate(360deg); }
     }
+
+    /* Quick Win Enhancements */
+    .option-selected {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%);
+      border-color: #10b981 !important;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+      transform: scale(1.02);
+    }
+
+    .option-correct {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(34, 197, 94, 0.05) 100%);
+      border-color: #22c55e !important;
+      animation: success-bounce 0.5s ease-out;
+    }
+
+    .option-incorrect {
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(239, 68, 68, 0.05) 100%);
+      border-color: #ef4444 !important;
+      animation: shake 0.5s ease-out;
+    }
+
+    @keyframes success-bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      75% { transform: translateX(10px); }
+    }
+
+    /* Better mobile touch targets */
+    @media (max-width: 640px) {
+      button, a, label {
+        min-height: 44px;
+      }
+      
+      input, button, select, textarea {
+        font-size: 16px !important;
+      }
+    }
+
+    /* Reduced motion support */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* Melhoria #1: Animações para modal de explicação */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes scaleIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9) translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    .animate-fadeIn {
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .animate-scaleIn {
+      animation: scaleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
   </style>
 </head>
 
-<body class="bg-slate-950 text-slate-50">
+  <body class="bg-slate-950 text-slate-50">
+  <!-- Sticky Header -->
+  <div id="sticky-progress" class="fixed top-0 left-0 right-0 z-50 bg-slate-950/95 backdrop-blur-lg border-b border-slate-800 hidden">
+    <div class="max-w-3xl mx-auto px-4 py-3">
+      <div class="flex items-center justify-between mb-2">
+        <span id="sticky-progress-text" class="text-xs text-slate-300">Pergunta 1 de 20</span>
+        <div class="flex items-center gap-2">
+          <!-- Theme toggle -->
+          <button id="theme-toggle-sticky" class="p-1.5 rounded-lg hover:bg-slate-800 transition-colors text-sm" title="Alternar tema">
+            <span id="theme-icon-sticky">🌙</span>
+          </button>
+          <!-- Sound toggle -->
+          <button id="sound-toggle-sticky" class="p-1.5 rounded-lg hover:bg-slate-800 transition-colors text-sm" title="Ativar/desativar sons">
+            <span id="sound-icon-sticky">🔊</span>
+          </button>
+          <span id="sticky-timer" class="text-xs font-medium text-amber-300">20s</span>
+        </div>
+      </div>
+      <div class="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
+        <div id="sticky-progress-bar" class="h-1.5 bg-emerald-500 w-0 transition-all duration-300"></div>
+      </div>
+    </div>
+  </div>
+
   <main class="min-h-screen flex items-center justify-center px-4 py-8">
     <div
       class="relative w-full max-w-3xl bg-gradient-to-b from-slate-900/90 to-slate-950 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-[0_0_80px_rgba(16,185,129,0.18)] overflow-hidden"
@@ -201,12 +305,22 @@
             20 perguntas rápidas sobre Antigo e Novo Testamento.
           </p>
         </div>
-        <a
-          href="index.html"
-          class="inline-flex items-center justify-center rounded-xl text-[11px] sm:text-xs text-slate-400 hover:text-emerald-300 underline-offset-2 hover:underline"
-        >
-          ← Voltar para a página inicial
-        </a>
+        <div class="flex items-center gap-2">
+          <!-- Theme toggle button (Quick Win #7) -->
+          <button id="theme-toggle" class="p-2 rounded-xl hover:bg-slate-800 transition-colors" title="Alternar tema claro/escuro">
+            <span id="theme-icon" class="text-lg">🌙</span>
+          </button>
+          <!-- Sound toggle button (Quick Win #3) -->
+          <button id="sound-toggle" class="p-2 rounded-xl hover:bg-slate-800 transition-colors" title="Ativar/desativar sons">
+            <span id="sound-icon" class="text-lg">🔊</span>
+          </button>
+          <a
+            href="index.html"
+            class="inline-flex items-center justify-center rounded-xl text-[11px] sm:text-xs text-slate-400 hover:text-emerald-300 underline-offset-2 hover:underline"
+          >
+            ← Voltar para a página inicial
+          </a>
+        </div>
       </header>
 
       <!-- PROGRESSO + TIMER -->
@@ -343,8 +457,6 @@
           </p>
 
           <div class="flex flex-col sm:flex-row gap-2">
-            
-             
             <button
               type="button"
               onclick="enviarResultadoParaRankingInput()"
@@ -361,20 +473,80 @@
           ></p>
         </div>
 
+        <!-- Grupos de Igreja -->
+        <div class="mb-5 border border-blue-500/30 bg-blue-500/5 rounded-2xl p-3 sm:p-4">
+          <p class="text-[11px] text-blue-300 mb-1 uppercase tracking-wide flex items-center gap-2">
+            👥 Grupos de Igreja
+          </p>
+          <p class="text-xs text-slate-200 mb-3">
+            Crie ou entre em um grupo da sua igreja para competir com seus amigos
+          </p>
+
+          <div class="flex flex-col gap-2">
+            <div class="flex gap-2">
+              <input
+                type="text"
+                id="group-code-input"
+                placeholder="Ex: CELULA-MATRIZ"
+                maxlength="20"
+                class="flex-1 px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-sm text-white outline-none focus:border-blue-400 transition-colors uppercase"
+              />
+              <button
+                type="button"
+                id="join-group-btn"
+                class="px-4 py-2 rounded-lg bg-blue-500 hover:bg-blue-400 text-white font-semibold text-xs transition-colors"
+              >
+                Entrar
+              </button>
+            </div>
+            
+            <button
+              type="button"
+              id="create-group-btn"
+              class="w-full px-4 py-2 rounded-lg border border-blue-500/30 text-blue-300 hover:bg-blue-500/10 font-semibold text-xs transition-colors"
+            >
+              ➕ Criar Novo Grupo
+            </button>
+            
+            <p id="group-status" class="text-[11px] text-slate-400"></p>
+            
+            <div id="current-group" class="hidden mt-2 p-3 rounded-lg bg-blue-500/10 border border-blue-500/30">
+              <p class="text-xs text-blue-300 font-semibold mb-1">Seu Grupo:</p>
+              <p id="group-name-display" class="text-sm text-white font-mono"></p>
+              <a href="ranking.html?group=GROUP_CODE" id="group-ranking-link" class="text-xs text-blue-400 hover:underline block mt-2">
+                🏆 Ver ranking do grupo
+              </a>
+            </div>
+          </div>
+        </div>
+
         <!-- AÇÕES FINAIS -->
-        <div class="flex flex-col sm:flex-row gap-3 mt-2">
+        <div class="space-y-3">
+          <!-- Share button (Quick Win #6) -->
           <button
-            id="retry-btn"
-            class="flex-1 px-4 py-2 rounded-xl bg-emerald-500 text-slate-950 font-semibold text-sm hover:bg-emerald-400 transition"
+            id="share-whatsapp-btn"
+            class="w-full px-4 py-3 rounded-xl bg-gradient-to-r from-green-600 to-green-500 text-white font-semibold text-sm hover:from-green-500 hover:to-green-400 transition-all flex items-center justify-center gap-2 shadow-lg"
           >
-            Refazer o teste
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+            </svg>
+            Compartilhar no WhatsApp
           </button>
-          <a
-            href="index.html"
-            class="flex-1 px-4 py-2 rounded-xl border border-slate-700 text-sm text-slate-200 hover:border-emerald-400 hover:text-emerald-300 text-center flex items-center justify-center"
-          >
-            Voltar para a página inicial
-          </a>
+
+          <div class="flex flex-col sm:flex-row gap-3">
+            <button
+              id="retry-btn"
+              class="flex-1 px-4 py-2 rounded-xl bg-emerald-500 text-slate-950 font-semibold text-sm hover:bg-emerald-400 transition"
+            >
+              🔄 Refazer o teste
+            </button>
+            <a
+              href="index.html"
+              class="flex-1 px-4 py-2 rounded-xl border border-slate-700 text-sm text-slate-200 hover:border-emerald-400 hover:text-emerald-300 text-center flex items-center justify-center"
+            >
+              ← Voltar para a página inicial
+            </a>
+          </div>
         </div>
       </section>
 

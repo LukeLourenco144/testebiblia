@@ -1,74 +1,94 @@
-// Pool de perguntas (já com propriedade "difficulty")
+// Pool de perguntas (com explanação e referência bíblica)
 const allQuestions = [
   {
     question: "Quem construiu a arca que salvou sua família do dilúvio?",
     options: ["Moisés", "Noé", "Abraão", "Davi"],
     answerIndex: 1,
     category: "Gênesis / Início da Bíblia",
-    difficulty: "iniciante"
+    difficulty: "iniciante",
+    explanation: "Noé foi escolhido por Deus para construir a arca devido à sua retidão. Ele tinha 600 anos quando o dilúvio começou e passou um ano dentro da arca com sua família e os animais.",
+    reference: "Gênesis 6:14-22; 7:6"
   },
   {
     question: "Em qual jardim Adão e Eva viviam antes do pecado?",
     options: ["Jardim de Getsêmani", "Jardim de Éden", "Jardim de Nazaré", "Jardim do Rei"],
     answerIndex: 1,
     category: "Gênesis / Início da Bíblia",
-    difficulty: "iniciante"
+    difficulty: "iniciante",
+    explanation: "O Jardim do Éden foi o paraíso criado por Deus onde Adão e Eva viviam em perfeita comunhão com Ele, antes da queda. Éden significa 'delícia' ou 'prazer'.",
+    reference: "Gênesis 2:8-15"
   },
   {
     question: "Deus libertou o povo de Israel do Egito através de qual líder?",
     options: ["Josué", "Samuel", "Moisés", "Elias"],
     answerIndex: 2,
     category: "Pentateuco / Êxodo",
-    difficulty: "iniciante"
+    difficulty: "iniciante",
+    explanation: "Moisés foi escolhido por Deus para liderar os israelitas para fora da escravidão no Egito. Ele realizou os dez sinais e maravilhas diante de Faraó e conduziu o povo através do Mar Vermelho.",
+    reference: "Êxodo 3:10; 14:21-31"
   },
   {
     question: "Qual profeta enfrentou os profetas de Baal no Monte Carmelo?",
     options: ["Elias", "Jeremias", "Isaías", "Ezequiel"],
     answerIndex: 0,
     category: "Profetas",
-    difficulty: "intermediário"
+    difficulty: "intermediário",
+    explanation: "Elias desafiou 450 profetas de Baal no Monte Carmelo para provar quem era o verdadeiro Deus. O fogo de Deus desceu do céu e consumiu o sacrifício, a lenha, as pedras e até a água.",
+    reference: "1 Reis 18:19-40"
   },
   {
     question: "Qual rei de Israel escreveu muitos salmos e era músico?",
     options: ["Saul", "Salomão", "Davi", "Ezequias"],
     answerIndex: 2,
     category: "História de Israel",
-    difficulty: "iniciante"
+    difficulty: "iniciante",
+    explanation: "Davi, além de ser rei, era conhecido como 'o doce salmista de Israel'. Ele escreveu cerca de 73 dos 150 salmos e tocava harpa para acalmar o rei Saul.",
+    reference: "1 Samuel 16:23; Salmos (diversos)"
   },
   {
     question: "Qual livro começa com a frase: 'No princípio era o Verbo'?",
     options: ["Gênesis", "João", "Lucas", "Atos"],
     answerIndex: 1,
     category: "Evangelhos",
-    difficulty: "iniciante"
+    difficulty: "iniciante",
+    explanation: "O evangelho de João começa de forma única, apresentando Jesus como o Verbo (Logos) que estava com Deus e era Deus desde o princípio, enfatizando Sua divindade.",
+    reference: "João 1:1-3"
   },
   {
     question: "Quantos evangelhos existem no Novo Testamento?",
     options: ["3", "4", "5", "7"],
     answerIndex: 1,
     category: "Evangelhos",
-    difficulty: "iniciante"
+    difficulty: "iniciante",
+    explanation: "São quatro evangelhos canônicos: Mateus, Marcos, Lucas e João. Cada um apresenta Jesus de uma perspectiva diferente: Rei (Mateus), Servo (Marcos), Homem (Lucas) e Deus (João).",
+    reference: "Mateus, Marcos, Lucas, João"
   },
   {
     question: "Quem negou Jesus três vezes antes do galo cantar?",
     options: ["João", "Pedro", "Tiago", "Tomé"],
     answerIndex: 1,
     category: "Evangelhos",
-    difficulty: "iniciante"
+    difficulty: "iniciante",
+    explanation: "Pedro negou conhecer Jesus três vezes na noite em que Ele foi preso, exatamente como Jesus havia predito. Após o galo cantar, Pedro se lembrou e chorou amargamente.",
+    reference: "Mateus 26:69-75; Lucas 22:54-62"
   },
   {
     question: "Quem foi usado por Deus para levar o evangelho aos gentios e escreveu muitas cartas?",
     options: ["Pedro", "Tiago", "Paulo", "Barnabé"],
     answerIndex: 2,
     category: "Cartas (Epístolas)",
-    difficulty: "iniciante"
+    difficulty: "iniciante",
+    explanation: "Paulo, inicialmente chamado Saulo, perseguia os cristãos até seu encontro com Jesus no caminho de Damasco. Tornou-se o apóstolo dos gentios e escreveu 13 livros do Novo Testamento.",
+    reference: "Atos 9:1-19; Romanos 11:13"
   },
   {
     question: "Qual é o primeiro livro da Bíblia?",
     options: ["Êxodo", "Salmos", "Mateus", "Gênesis"],
     answerIndex: 3,
     category: "Gênesis / Início da Bíblia",
-    difficulty: "iniciante"
+    difficulty: "iniciante",
+    explanation: "Gênesis, que significa 'origem' ou 'começo', é o primeiro livro tanto da Bíblia quanto do Pentateuco. Relata a criação do mundo, a queda do homem e a história dos patriarcas.",
+    reference: "Gênesis 1-50"
   },
   {
     question: "Qual é o último livro da Bíblia?",
@@ -557,11 +577,319 @@ const QUESTIONS_PER_TEST = 20;
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 const RANKING_ENDPOINT = "https://script.google.com/macros/s/AKfycbwGpbTEKSsqsxXufLaAsOD-pHxU9WJSLAjVhQQY23WvzVGZF10Ha00EimK5i9vUD4Sb6g/exec";
 
+// Sistema de Achievements
+const ACHIEVEMENTS = {
+  first_try: {
+    id: 'first_try',
+    name: 'Primeira Jornada',
+    description: 'Completou o primeiro teste',
+    icon: '🎯',
+    rarity: 'common'
+  },
+  perfect_score: {
+    id: 'perfect_score',
+    name: 'Perfeição Divina',
+    description: 'Alcançou 1000 pontos (20/20 corretas)',
+    icon: '👑',
+    rarity: 'legendary'
+  },
+  speed_demon: {
+    id: 'speed_demon',
+    name: 'Raio Veloz',
+    description: 'Completou o teste em menos de 5 minutos',
+    icon: '⚡',
+    rarity: 'rare'
+  },
+  comeback_king: {
+    id: 'comeback_king',
+    name: 'Ressurreição',
+    description: 'Melhorou 300+ pontos',
+    icon: '🔄',
+    rarity: 'rare'
+  },
+  expert_level: {
+    id: 'expert_level',
+    name: 'Conhecedor Expert',
+    description: 'Alcançou nível Expert',
+    icon: '🌟',
+    rarity: 'epic'
+  },
+  no_mistakes: {
+    id: 'no_mistakes',
+    name: 'Sem Erros',
+    description: 'Acertou todas as últimas 10 perguntas',
+    icon: '💯',
+    rarity: 'rare'
+  },
+  gospel_master: {
+    id: 'gospel_master',
+    name: 'Mestre dos Evangelhos',
+    description: 'Acertou todas sobre Evangelhos',
+    icon: '📖',
+    rarity: 'epic'
+  }
+};
+
+function getUnlockedAchievements() {
+  try {
+    return JSON.parse(localStorage.getItem('achievements') || '[]');
+  } catch (e) {
+    return [];
+  }
+}
+
+function unlockAchievement(achievementId) {
+  const unlocked = getUnlockedAchievements();
+  if (!unlocked.includes(achievementId)) {
+    unlocked.push(achievementId);
+    localStorage.setItem('achievements', JSON.stringify(unlocked));
+    return true; // Novo achievement
+  }
+  return false; // Já tinha
+}
+
+function checkAchievements(testData) {
+  const newAchievements = [];
+  const previousTests = JSON.parse(localStorage.getItem('test_history') || '[]');
+  
+  // Primeira Jornada
+  if (previousTests.length === 0) {
+    if (unlockAchievement('first_try')) {
+      newAchievements.push(ACHIEVEMENTS.first_try);
+    }
+  }
+  
+  // Perfeição Divina
+  if (testData.score === 1000) {
+    if (unlockAchievement('perfect_score')) {
+      newAchievements.push(ACHIEVEMENTS.perfect_score);
+    }
+  }
+  
+  // Raio Veloz (menos de 5 minutos)
+  const testDuration = (Date.now() - testData.startTime) / 1000;
+  if (testDuration < 300) {
+    if (unlockAchievement('speed_demon')) {
+      newAchievements.push(ACHIEVEMENTS.speed_demon);
+    }
+  }
+  
+  // Ressurreição (melhorou 300+ pontos)
+  if (previousTests.length > 0) {
+    const lastScore = previousTests[previousTests.length - 1].score;
+    if (testData.score - lastScore >= 300) {
+      if (unlockAchievement('comeback_king')) {
+        newAchievements.push(ACHIEVEMENTS.comeback_king);
+      }
+    }
+  }
+  
+  // Expert
+  if (testData.level === 'Expert') {
+    if (unlockAchievement('expert_level')) {
+      newAchievements.push(ACHIEVEMENTS.expert_level);
+    }
+  }
+  
+  // Sem Erros (últimas 10 perguntas certas)
+  const last10 = testData.answers.slice(-10);
+  const last10Questions = testData.questionsAsked.slice(-10);
+  const allCorrect = last10.every((ans, idx) => ans === last10Questions[idx].answerIndex);
+  if (allCorrect) {
+    if (unlockAchievement('no_mistakes')) {
+      newAchievements.push(ACHIEVEMENTS.no_mistakes);
+    }
+  }
+  
+  // Mestre dos Evangelhos
+  const gospelQuestions = testData.questionsAsked.filter(q => q.category === 'Evangelhos');
+  if (gospelQuestions.length >= 3) {
+    const gospelCorrect = gospelQuestions.every((q, idx) => {
+      const qIndex = testData.questionsAsked.indexOf(q);
+      return testData.answers[qIndex] === q.answerIndex;
+    });
+    if (gospelCorrect) {
+      if (unlockAchievement('gospel_master')) {
+        newAchievements.push(ACHIEVEMENTS.gospel_master);
+      }
+    }
+  }
+  
+  // Salvar histórico
+  previousTests.push({
+    score: testData.score,
+    level: testData.level,
+    date: Date.now()
+  });
+  localStorage.setItem('test_history', JSON.stringify(previousTests.slice(-10))); // Manter últimos 10
+  
+  return newAchievements;
+}
+
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// QUICK WINS: Sound System (Quick Win #3)
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+let soundEnabled = localStorage.getItem('sound_enabled') !== 'false';
+
+// Simple sound effects using Web Audio API
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+const audioCtx = new AudioContext();
+
+function playSound(frequency, duration, type = 'sine') {
+  if (!soundEnabled) return;
+  
+  const oscillator = audioCtx.createOscillator();
+  const gainNode = audioCtx.createGain();
+  
+  oscillator.connect(gainNode);
+  gainNode.connect(audioCtx.destination);
+  
+  oscillator.frequency.value = frequency;
+  oscillator.type = type;
+  
+  gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+  gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+  
+  oscillator.start(audioCtx.currentTime);
+  oscillator.stop(audioCtx.currentTime + duration);
+}
+
+function playCorrectSound() {
+  playSound(880, 0.1, 'sine');
+  setTimeout(() => playSound(1046, 0.15, 'sine'), 100);
+}
+
+function playIncorrectSound() {
+  playSound(200, 0.2, 'sawtooth');
+}
+
+function playClickSound() {
+  playSound(400, 0.05, 'sine');
+}
+
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// QUICK WINS: Haptic Feedback (Quick Win #2)
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+function triggerHaptic(pattern = 'light') {
+  if (!navigator.vibrate) return;
+  
+  const patterns = {
+    light: 10,
+    medium: 50,
+    heavy: 100,
+    success: [10, 50, 10],
+    error: [50, 100, 50]
+  };
+  
+  navigator.vibrate(patterns[pattern] || patterns.light);
+}
+
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// QUICK WINS: Subtle Confetti (Quick Win #4)
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+function subtleConfetti() {
+  if (typeof confetti === 'undefined') return;
+  
+  confetti({
+    particleCount: 30,
+    spread: 50,
+    origin: { y: 0.6 },
+    colors: ['#10b981', '#34d399', '#6ee7b7'],
+    ticks: 100,
+    gravity: 1.2,
+    scalar: 0.8
+  });
+}
+
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// QUICK WINS: Progress Saving (Quick Win #5)
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+function saveProgress() {
+  const progressData = {
+    questionsAsked: questionsAsked.map(q => ({
+      question: q.question,
+      answerIndex: q.answerIndex,
+      category: q.category,
+      difficulty: q.difficulty,
+      options: q.options
+    })),
+    answers,
+    currentIndex,
+    score,
+    currentDifficultyIndex,
+    timestamp: Date.now()
+  };
+  
+  try {
+    localStorage.setItem('quiz_progress', JSON.stringify(progressData));
+  } catch (e) {
+    console.error('Error saving progress:', e);
+  }
+}
+
+function loadProgress() {
+  try {
+    const saved = localStorage.getItem('quiz_progress');
+    if (!saved) return null;
+    
+    const data = JSON.parse(saved);
+    
+    // Check if progress is less than 24 hours old
+    if (Date.now() - data.timestamp > 86400000) {
+      localStorage.removeItem('quiz_progress');
+      return null;
+    }
+    
+    return data;
+  } catch (e) {
+    console.error('Error loading progress:', e);
+    return null;
+  }
+}
+
+function clearProgress() {
+  localStorage.removeItem('quiz_progress');
+}
+
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// QUICK WINS: Sticky Header (Quick Win #1)
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+function updateStickyHeader() {
+  const stickyProgress = document.getElementById('sticky-progress');
+  const stickyProgressText = document.getElementById('sticky-progress-text');
+  const stickyProgressBar = document.getElementById('sticky-progress-bar');
+  const mainSection = document.getElementById('quiz-section');
+  
+  if (!stickyProgress || !mainSection) return;
+  
+  // Show sticky header when scrolled down
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        stickyProgress.classList.add('hidden');
+      } else {
+        stickyProgress.classList.remove('hidden');
+      }
+    });
+  }, { threshold: 0.1 });
+  
+  observer.observe(mainSection);
+  
+  // Update content
+  if (stickyProgressText) {
+    stickyProgressText.textContent = `Pergunta ${currentIndex + 1} de ${QUESTIONS_PER_TEST}`;
+  }
+  if (stickyProgressBar) {
+    const percent = ((currentIndex + 1) / QUESTIONS_PER_TEST) * 100;
+    stickyProgressBar.style.width = `${percent}%`;
+  }
+}
+
 // pesos por dificuldade (para o score 0–1000)
 function getDifficultyWeight(diff) {
-  if (diff === "avançado") return 70;
+  if (diff === "avançado") return 60;
   if (diff === "intermediário") return 50;
-  return 30; // iniciante (default)
+  return 40; // iniciante (default)
 }
 
 // utilitário: embaralhar array (Fisher-Yates)
@@ -585,6 +913,9 @@ let currentDifficultyIndex = 1; // começa em intermediário
 
 // guarda o nível textual (pra enviar pro ranking)
 let lastLevelName = "";
+
+// Melhoria #5: Rastrear tempo de início do teste
+let testStartTime = Date.now();
 
 // ---------------------------
 // Funções de seleção de perguntas
@@ -691,6 +1022,9 @@ function renderQuestion() {
   const percent = (currentIndex / QUESTIONS_PER_TEST) * 100;
   progressBar.style.width = `${percent}%`;
 
+  // Update sticky header (Quick Win #1)
+  updateStickyHeader();
+
   prevBtn.disabled = currentIndex === 0;
   nextBtn.textContent =
     currentIndex === QUESTIONS_PER_TEST - 1 ? "Finalizar teste" : "Próxima pergunta";
@@ -703,7 +1037,7 @@ function renderQuestion() {
 
     const wrapper = document.createElement("label");
     wrapper.className =
-      "flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-700 text-sm cursor-pointer hover:border-emerald-400 transition";
+      "flex items-center gap-3 px-4 py-3 rounded-xl border-2 border-slate-700 text-sm cursor-pointer hover:border-emerald-500/50 hover:bg-slate-800/50 transition-all";
 
     const input = document.createElement("input");
     input.type = "radio";
@@ -714,21 +1048,34 @@ function renderQuestion() {
 
     if (answers[currentIndex] === idx) {
       input.checked = true;
-      wrapper.classList.add("border-emerald-500");
+      wrapper.classList.add("option-selected");
     }
 
     input.addEventListener("change", () => {
       answers[currentIndex] = idx;
       errorMessage.classList.add("hidden");
+      
+      // Remove selected class from all options
       Array.from(optionsForm.querySelectorAll("label")).forEach(l =>
-        l.classList.remove("border-emerald-500")
+        l.classList.remove("option-selected")
       );
-      wrapper.classList.add("border-emerald-500");
+      wrapper.classList.add("option-selected");
+      
+      // Quick Win #2: Haptic feedback
+      triggerHaptic('light');
+      
+      // Quick Win #3: Sound feedback
+      playClickSound();
+      
+      // Quick Win #5: Save progress
+      saveProgress();
+      
       updateScorePreview();
     });
 
     const span = document.createElement("span");
     span.textContent = opt;
+    span.className = "flex-1 text-slate-200";
 
     wrapper.appendChild(input);
     wrapper.appendChild(span);
@@ -746,14 +1093,93 @@ function updateScorePreview() {
   scorePreview.textContent = `Respostas corretas: ${correct}`;
 }
 
-// ---------------------------
-// Navegação
-// ---------------------------
-nextBtn.addEventListener("click", () => {
+// Mostrar explicação após resposta
+function showExplanation(question, userAnswer, isCorrect) {
+  // Só mostrar se a pergunta tiver explicação
+  if (!question.explanation) {
+    return Promise.resolve();
+  }
+
+  return new Promise((resolve) => {
+    const modal = document.createElement('div');
+    modal.id = 'explanation-modal';
+    modal.className = 'fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn';
+    
+    modal.innerHTML = `
+      <div class="relative max-w-lg w-full bg-gradient-to-b from-slate-900 to-slate-950 rounded-2xl border-2 ${
+        isCorrect ? 'border-emerald-500' : 'border-amber-500'
+      } p-6 shadow-2xl animate-scaleIn">
+        <!-- Header -->
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-12 h-12 rounded-full ${
+            isCorrect ? 'bg-emerald-500/20' : 'bg-amber-500/20'
+          } flex items-center justify-center text-2xl">
+            ${isCorrect ? '✅' : '💡'}
+          </div>
+          <div class="flex-1">
+            <h3 class="font-bold text-lg ${
+              isCorrect ? 'text-emerald-400' : 'text-amber-400'
+            }">
+              ${isCorrect ? 'Parabéns! Resposta correta!' : 'Resposta: ' + question.options[question.answerIndex]}
+            </h3>
+            <p class="text-xs text-slate-400">
+              ${isCorrect ? 'Continue assim!' : 'Aprenda com esta questão'}
+            </p>
+          </div>
+        </div>
+        
+        <!-- Explanation -->
+        <div class="mb-4 p-4 rounded-xl bg-slate-800/50 border border-slate-700">
+          <p class="text-sm text-slate-300 leading-relaxed">
+            ${question.explanation}
+          </p>
+        </div>
+        
+        <!-- Bible Reference -->
+        <div class="flex items-center gap-2 mb-4 p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30">
+          <span class="text-lg">📖</span>
+          <span class="text-sm font-medium text-emerald-300">
+            ${question.reference}
+          </span>
+        </div>
+        
+        <!-- Continue Button -->
+        <button
+          id="continue-btn"
+          class="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold transition-colors">
+          Continuar →
+        </button>
+      </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Botão continuar
+    document.getElementById('continue-btn').addEventListener('click', () => {
+      modal.remove();
+      resolve();
+    });
+    
+    // Fechar com ESC
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') {
+        modal.remove();
+        document.removeEventListener('keydown', handleEscape);
+        resolve();
+      }
+    };
+    document.addEventListener('keydown', handleEscape);
+  });
+}
+
+// Navegação e validação de resposta
+nextBtn.addEventListener("click", async () => {
   const selected = document.querySelector('input[name="option"]:checked');
 
   if (!selected && answers[currentIndex] === null) {
     errorMessage.classList.remove("hidden");
+    triggerHaptic('error');
+    playIncorrectSound();
     return;
   }
 
@@ -761,13 +1187,47 @@ nextBtn.addEventListener("click", () => {
   const userAns = answers[currentIndex];
   const isCorrect = userAns === currentQuestion.answerIndex;
 
+  // Visual feedback for correct/incorrect
+  const allOptions = Array.from(optionsForm.querySelectorAll("label"));
+  allOptions.forEach((label, idx) => {
+    if (idx === currentQuestion.answerIndex) {
+      label.classList.add("option-correct");
+    } else if (idx === userAns && !isCorrect) {
+      label.classList.add("option-incorrect");
+    }
+  });
+
+  // Feedback haptic e sonoro
+  if (isCorrect) {
+    triggerHaptic('success');
+    playCorrectSound();
+    subtleConfetti();
+  } else {
+    triggerHaptic('error');
+    playIncorrectSound();
+  }
+
+  // Desabilitar botão durante feedback
+  nextBtn.disabled = true;
+
+  // Aguardar feedback visual
+  await new Promise(resolve => setTimeout(resolve, 1000));
+
+  // Mostrar explicação
+  await showExplanation(currentQuestion, userAns, isCorrect);
+
+  // Continuar fluxo
   if (isCorrect) {
     currentDifficultyIndex = Math.min(currentDifficultyIndex + 1, difficultyLevels.length - 1);
   } else {
     currentDifficultyIndex = Math.max(currentDifficultyIndex - 1, 0);
   }
 
+  // Salvar progresso
+  saveProgress();
+
   if (currentIndex === QUESTIONS_PER_TEST - 1) {
+    clearProgress();
     calculateResult();
     return;
   }
@@ -778,6 +1238,7 @@ nextBtn.addEventListener("click", () => {
     pickNextQuestion();
   }
 
+  nextBtn.disabled = false;
   renderQuestion();
 });
 
@@ -925,11 +1386,15 @@ function sendToRankingFinal(name, scoreValue, levelName) {
     .join("")
     .slice(0, 2);
 
+  // Incluir grupo de igreja se houver
+  const churchGroup = localStorage.getItem('church_group') || '';
+
   const payload = {
     nome: name,
     score: scoreValue,
     nivel: levelName,
     avatar: avatar,
+    grupo: churchGroup,
     origem: "TesteBiblia",
     dataHora: new Date().toISOString()
   };
@@ -1002,26 +1467,26 @@ function calculateResult() {
   const normalizedScore = Math.round((rawScore / (maxScore || 1)) * 1000);
   score = normalizedScore;
 
-  // Definição de nível (faixas)
+  // Definição de nível (faixas ajustadas)
   let levelName = "";
   let ribbonBg = "#ef4444"; // cor da faixa
   let badgeText = "Iniciante";
 
-  if (score < 250) {
+  if (score < 500) {
     levelName = "Iniciante";
     badgeText = "Iniciante";
     ribbonBg = "#ef4444"; // red-500
-  } else if (score < 500) {
+  } else if (score < 700) {
     levelName = "Intermediário";
     badgeText = "Intermediário";
     ribbonBg = "#facc15"; // yellow-400
-  } else if (score < 800) {
+  } else if (score < 900) {
     levelName = "Avançado";
     badgeText = "Avançado";
     ribbonBg = "#22c55e"; // green-500
   } else {
-    levelName = "Mestre";
-    badgeText = "Mestre";
+    levelName = "Expert";
+    badgeText = "Expert";
     ribbonBg = "#a855f7"; // purple-500
   }
 
@@ -1051,8 +1516,8 @@ function calculateResult() {
       badgeIcon.classList.add("badge-intermediario");
     } else if (levelName === "Avançado") {
       badgeIcon.classList.add("badge-avancado");
-    } else {
-      badgeIcon.classList.add("badge-mestre");
+    } else if (levelName === "Expert") {
+      badgeIcon.classList.add("badge-mestre"); // Mantém a classe "mestre" para estilo roxo/purple
     }
 
     // garante animação de brilho / partículas
@@ -1075,7 +1540,7 @@ function calculateResult() {
     .map(([cat]) => cat);
 
   if (pontosFracos.length === 0) {
-    if (score >= 800) {
+    if (score >= 900) {
       diagnosticTextEl.textContent =
         "Impressionante! Você mandou muito bem. Continue firme estudando e ensinando a Palavra.";
     } else {
@@ -1152,12 +1617,28 @@ function calculateResult() {
     );
   }
 
+  // Verificar e mostrar achievements
+  const testData = {
+    score,
+    level: levelName,
+    questionsAsked,
+    answers,
+    startTime: testStartTime
+  };
+  
+  const newAchievements = checkAchievements(testData);
+  
   // mostra tela de resultado
   quizSection.classList.add("hidden");
   resultSection.classList.remove("hidden");
 
   const shareBtn = document.getElementById("share-btn");
   if (shareBtn) shareBtn.classList.remove("hidden");
+  
+  // Mostrar achievements desbloqueados
+  if (newAchievements.length > 0) {
+    setTimeout(() => showAchievements(newAchievements), 1000);
+  }
 
   // ---------------------------
   // Pergunta o nome e envia pro ranking
@@ -1185,18 +1666,73 @@ function addTip(text) {
   studyTipsEl.appendChild(li);
 }
 
-// ---------------------------
-// Refazer teste
-// ---------------------------
-retryBtn.addEventListener("click", () => {
-  resetRemaining();
-  pickNextQuestion();
-  currentIndex = 0;
-  score = 0;
-  quizSection.classList.remove("hidden");
-  resultSection.classList.add("hidden");
-  renderQuestion();
-});
+// Mostrar achievements desbloqueados
+function showAchievements(achievements) {
+  const modal = document.createElement('div');
+  modal.className = 'fixed inset-0 z-[110] flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm animate-fadeIn';
+  
+  const rarityColors = {
+    common: 'border-slate-500',
+    rare: 'border-blue-500',
+    epic: 'border-purple-500',
+    legendary: 'border-amber-500'
+  };
+  
+  const rarityGlow = {
+    common: 'shadow-slate-500/30',
+    rare: 'shadow-blue-500/40',
+    epic: 'shadow-purple-500/50',
+    legendary: 'shadow-amber-500/60'
+  };
+  
+  const achievementsHTML = achievements.map(ach => `
+    <div class="achievement-card bg-gradient-to-br from-slate-900 to-slate-950 border-2 ${rarityColors[ach.rarity]} rounded-2xl p-5 shadow-2xl ${rarityGlow[ach.rarity]} transform hover:scale-105 transition-transform">
+      <div class="flex items-center gap-4">
+        <div class="text-5xl">${ach.icon}</div>
+        <div class="flex-1">
+          <h4 class="font-bold text-lg text-emerald-400">${ach.name}</h4>
+          <p class="text-sm text-slate-300">${ach.description}</p>
+          <p class="text-xs text-slate-500 mt-1 uppercase tracking-wide">${ach.rarity}</p>
+        </div>
+      </div>
+    </div>
+  `).join('');
+  
+  modal.innerHTML = `
+    <div class="max-w-md w-full animate-scaleIn">
+      <div class="text-center mb-6">
+        <h3 class="text-3xl font-bold text-emerald-400 mb-2">🎉 Parabéns!</h3>
+        <p class="text-slate-300">Você desbloqueou ${achievements.length} conquista${achievements.length > 1 ? 's' : ''}!</p>
+      </div>
+      
+      <div class="space-y-4 mb-6">
+        ${achievementsHTML}
+      </div>
+      
+      <button
+        id="close-achievements"
+        class="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold transition-colors">
+        Continuar
+      </button>
+      
+      <p class="text-center mt-4 text-xs text-slate-500">
+        Total desbloqueado: ${getUnlockedAchievements().length}/${Object.keys(ACHIEVEMENTS).length}
+      </p>
+    </div>
+  `;
+  
+  document.body.appendChild(modal);
+  
+  // Confetti para conquistas raras
+  if (achievements.some(a => a.rarity === 'legendary' || a.rarity === 'epic')) {
+    confettiExplosion();
+  }
+  
+  document.getElementById('close-achievements').addEventListener('click', () => {
+    modal.remove();
+  });
+}
+
 
 // ---------------------------
 // Compartilhar / salvar imagem do resultado
@@ -1253,8 +1789,233 @@ document.addEventListener("click", (e) => {
 });
 
 // ---------------------------
-// Inicialização
+// QUICK WINS: Sound Toggle (Quick Win #3)
 // ---------------------------
-resetRemaining();
-pickNextQuestion();
+function setupSoundToggle() {
+  const soundToggle = document.getElementById('sound-toggle');
+  const soundToggleSticky = document.getElementById('sound-toggle-sticky');
+  const soundIcon = document.getElementById('sound-icon');
+  const soundIconSticky = document.getElementById('sound-icon-sticky');
+  
+  function updateSoundIcons() {
+    const icon = soundEnabled ? '🔊' : '🔇';
+    if (soundIcon) soundIcon.textContent = icon;
+    if (soundIconSticky) soundIconSticky.textContent = icon;
+  }
+  
+  function toggleSound() {
+    soundEnabled = !soundEnabled;
+    localStorage.setItem('sound_enabled', soundEnabled);
+    updateSoundIcons();
+    
+    // Play a sound to confirm
+    if (soundEnabled) {
+      playClickSound();
+    }
+  }
+  
+  if (soundToggle) soundToggle.addEventListener('click', toggleSound);
+  if (soundToggleSticky) soundToggleSticky.addEventListener('click', toggleSound);
+  
+  updateSoundIcons();
+}
+
+// ---------------------------
+// QUICK WINS: Theme Toggle (Quick Win #7)
+// ---------------------------
+function setupThemeToggle() {
+  const themeToggle = document.getElementById('theme-toggle');
+  const themeToggleSticky = document.getElementById('theme-toggle-sticky');
+  const themeIcon = document.getElementById('theme-icon');
+  const themeIconSticky = document.getElementById('theme-icon-sticky');
+  const body = document.body;
+  
+  function updateThemeIcons(theme) {
+    const icon = theme === 'light' ? '☀️' : '🌙';
+    if (themeIcon) themeIcon.textContent = icon;
+    if (themeIconSticky) themeIconSticky.textContent = icon;
+  }
+  
+  function setTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    
+    if (theme === 'light') {
+      body.classList.remove('bg-slate-950', 'text-slate-50');
+      body.classList.add('bg-white', 'text-slate-900');
+    } else {
+      body.classList.remove('bg-white', 'text-slate-900');
+      body.classList.add('bg-slate-950', 'text-slate-50');
+    }
+    
+    updateThemeIcons(theme);
+  }
+  
+  function toggleTheme() {
+    const currentTheme = localStorage.getItem('theme') || 'dark';
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+    playClickSound();
+  }
+  
+  if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
+  if (themeToggleSticky) themeToggleSticky.addEventListener('click', toggleTheme);
+  
+  // Initialize theme
+  const savedTheme = localStorage.getItem('theme') || 'dark';
+  setTheme(savedTheme);
+}
+
+// ---------------------------
+// QUICK WINS: WhatsApp Share (Quick Win #6)
+// ---------------------------
+function setupWhatsAppShare() {
+  const shareBtn = document.getElementById('share-whatsapp-btn');
+  if (!shareBtn) return;
+  
+  shareBtn.addEventListener('click', () => {
+    const message = `🏆 Fiz ${score} pontos no Teste da Bíblia!\n\nNível: ${lastLevelName}\nVocê consegue me superar?\n\nFaça o teste: ${window.location.origin}/quiz.html\n\n📊 Ver ranking: ${window.location.origin}/ranking.html`;
+    
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+    
+    // Track share event
+    if (typeof gtag !== 'undefined') {
+      gtag('event', 'share', {
+        method: 'WhatsApp',
+        content_type: 'quiz_result',
+        item_id: 'quiz_result'
+      });
+    }
+  });
+}
+
+// ---------------------------
+// QUICK WINS: Load Saved Progress (Quick Win #5)
+// ---------------------------
+function attemptProgressRestore() {
+  const savedProgress = loadProgress();
+  
+  if (!savedProgress) return false;
+  
+  // Ask user if they want to continue
+  const shouldContinue = confirm(
+    `Você tem um teste em andamento (pergunta ${savedProgress.currentIndex + 1} de ${QUESTIONS_PER_TEST}).\n\nDeseja continuar de onde parou?`
+  );
+  
+  if (!shouldContinue) {
+    clearProgress();
+    return false;
+  }
+  
+  // Restore state
+  questionsAsked = savedProgress.questionsAsked;
+  answers = savedProgress.answers;
+  currentIndex = savedProgress.currentIndex;
+  score = savedProgress.score || 0;
+  currentDifficultyIndex = savedProgress.currentDifficultyIndex || 1;
+  
+  // Rebuild remaining questions pool
+  remainingByDifficulty = {
+    iniciante: shuffle(allQuestions.filter(q => q.difficulty === "iniciante")),
+    "intermediário": shuffle(allQuestions.filter(q => q.difficulty === "intermediário")),
+    avançado: shuffle(allQuestions.filter(q => q.difficulty === "avançado"))
+  };
+  
+  return true;
+}
+
+// Sistema de Grupos de Igreja
+function setupGroupSystem() {
+  const groupCodeInput = document.getElementById('group-code-input');
+  const joinGroupBtn = document.getElementById('join-group-btn');
+  const createGroupBtn = document.getElementById('create-group-btn');
+  const groupStatus = document.getElementById('group-status');
+  const currentGroupDiv = document.getElementById('current-group');
+  const groupNameDisplay = document.getElementById('group-name-display');
+  const groupRankingLink = document.getElementById('group-ranking-link');
+  
+  // Verificar se já está em um grupo
+  function checkCurrentGroup() {
+    const currentGroup = localStorage.getItem('church_group');
+    if (currentGroup) {
+      currentGroupDiv.classList.remove('hidden');
+      groupNameDisplay.textContent = currentGroup;
+      groupRankingLink.href = `ranking.html?group=${encodeURIComponent(currentGroup)}`;
+    }
+  }
+  
+  // Criar novo grupo
+  if (createGroupBtn) {
+    createGroupBtn.addEventListener('click', () => {
+      const randomCode = 'GRUPO-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+      groupCodeInput.value = randomCode;
+      groupStatus.textContent = `💡 Código gerado: ${randomCode} - Clique em "Entrar" para criar`;
+      groupStatus.className = 'text-[11px] text-blue-400';
+    });
+  }
+  
+  // Entrar em grupo
+  if (joinGroupBtn) {
+    joinGroupBtn.addEventListener('click', () => {
+      const code = groupCodeInput.value.trim().toUpperCase();
+      
+      if (!code) {
+        groupStatus.textContent = '⚠️ Digite um código de grupo';
+        groupStatus.className = 'text-[11px] text-amber-400';
+        return;
+      }
+      
+      if (code.length < 5) {
+        groupStatus.textContent = '⚠️ Código deve ter pelo menos 5 caracteres';
+        groupStatus.className = 'text-[11px] text-amber-400';
+        return;
+      }
+      
+      // Salvar grupo
+      localStorage.setItem('church_group', code);
+      
+      groupStatus.textContent = `✅ Você entrou no grupo: ${code}`;
+      groupStatus.className = 'text-[11px] text-emerald-400';
+      
+      checkCurrentGroup();
+      
+      // Limpar após 3 segundos
+      setTimeout(() => {
+        groupCodeInput.value = '';
+        groupStatus.textContent = '';
+      }, 3000);
+    });
+  }
+  
+  checkCurrentGroup();
+}
+
+// Inicialização
+setupThemeToggle();
+setupSoundToggle();
+setupWhatsAppShare();
+setupGroupSystem();
+
+// Try to restore progress
+const progressRestored = attemptProgressRestore();
+
+if (!progressRestored) {
+  resetRemaining();
+  pickNextQuestion();
+}
+
 renderQuestion();
+
+// Botão de refazer teste
+retryBtn.addEventListener("click", () => {
+  clearProgress();
+  resetRemaining();
+  pickNextQuestion();
+  currentIndex = 0;
+  score = 0;
+  testStartTime = Date.now();
+  quizSection.classList.remove("hidden");
+  resultSection.classList.add("hidden");
+  renderQuestion();
+});
