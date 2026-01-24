@@ -258,7 +258,7 @@
   </style>
 </head>
 
-  <body class="bg-slate-950 text-slate-50">
+<body class="bg-slate-950 text-slate-50">
   <!-- Sticky Header -->
   <div id="sticky-progress" class="fixed top-0 left-0 right-0 z-50 bg-slate-950/95 backdrop-blur-lg border-b border-slate-800 hidden">
     <div class="max-w-3xl mx-auto px-4 py-3">
@@ -297,7 +297,7 @@
           >
             <span class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
             <span class="text-[11px] font-medium text-emerald-300">
-              MVP · Teste da Bíblia
+              Teste da Bíblia
             </span>
           </div>
           <h1 class="text-2xl md:text-3xl font-bold tracking-tight">Teste da Bíblia</h1>
@@ -314,12 +314,12 @@
           <button id="sound-toggle" class="p-2 rounded-xl hover:bg-slate-800 transition-colors" title="Ativar/desativar sons">
             <span id="sound-icon" class="text-lg">🔊</span>
           </button>
-          <a
-            href="index.html"
-            class="inline-flex items-center justify-center rounded-xl text-[11px] sm:text-xs text-slate-400 hover:text-emerald-300 underline-offset-2 hover:underline"
-          >
-            ← Voltar para a página inicial
-          </a>
+        <a
+          href="index.html"
+          class="inline-flex items-center justify-center rounded-xl text-[11px] sm:text-xs text-slate-400 hover:text-emerald-300 underline-offset-2 hover:underline"
+        >
+          ← Voltar para a página inicial
+        </a>
         </div>
       </header>
 
@@ -389,14 +389,14 @@
         </div>
       </section>
 
-      <!-- RESULTADO -->
+      <!-- RESULTADO (Versão Minimalista) -->
       <section id="result-section" class="relative z-10 hidden">
-        <h2 class="text-xl md:text-2xl font-bold mb-1">Seu resultado</h2>
-        <p class="text-xs md:text-sm text-slate-300 mb-6">
-          Veja sua pontuação, nível e áreas para aprofundar.
+        <h2 class="text-xl md:text-2xl font-bold mb-1 text-center">Seu resultado</h2>
+        <p class="text-xs md:text-sm text-slate-300 mb-6 text-center">
+          Parabéns por completar o teste! 🎉
         </p>
 
-        <!-- GAMIFICAÇÃO -->
+        <!-- GAMIFICAÇÃO (Badge + Score) -->
         <div id="badge-wrapper" class="flex flex-col items-center mb-6">
           <div
             id="badge-icon"
@@ -414,76 +414,128 @@
             </div>
           </div>
 
-          <p id="final-score" class="mt-8 text-4xl font-extrabold">
+          <p id="final-score" class="mt-8 text-5xl font-extrabold">
             0 / 1000
           </p>
-          <p id="final-level" class="text-sm text-slate-300 mt-1">
+          <p id="final-level" class="text-lg text-slate-300 mt-2 font-semibold">
             Nível -
           </p>
-          <p class="text-[11px] text-slate-500 mt-1 text-center">
-            Essa é a sua pontuação no Teste da Bíblia. Use como meta para crescer cada vez mais.
+        </div>
+
+        <!-- RESUMO RÁPIDO (1-2 linhas) -->
+        <div class="text-center mb-6 px-4">
+          <p id="quick-summary" class="text-sm text-slate-300 leading-relaxed">
+            Você acertou <span id="correct-count" class="font-bold text-emerald-400">0</span> de 20 perguntas.
           </p>
         </div>
 
-        <!-- DIAGNÓSTICO -->
-        <div class="border border-slate-800 rounded-2xl p-3 sm:p-4 mb-4 text-sm bg-slate-950/50">
-          <p class="text-[11px] text-slate-400 mb-1 uppercase tracking-wide">
-            Como você foi?
-          </p>
-          <p id="diagnostic-text" class="text-slate-200">
-            Carregando análise...
+        <!-- BOTÃO WHATSAPP GIGANTE (CTA Principal) -->
+        <div class="mb-6">
+          <button
+            id="share-whatsapp-btn"
+            class="w-full px-6 py-5 rounded-2xl bg-gradient-to-r from-[#25D366] to-[#128C7E] text-white font-bold text-lg hover:from-[#20BA5A] hover:to-[#0F7A6A] transition-all flex items-center justify-center gap-3 shadow-2xl shadow-green-500/30 hover:shadow-green-500/50 hover:scale-105 transform"
+          >
+            <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+            </svg>
+            🔥 DESAFIAR AMIGOS NO WHATSAPP
+          </button>
+          
+          <p class="text-center text-xs text-slate-400 mt-3">
+            👥 <span id="social-proof-count">2.847</span> pessoas já testaram seu conhecimento
           </p>
         </div>
 
-        <!-- SUGESTÕES DE ESTUDO -->
-        <div class="border border-slate-800 rounded-2xl p-3 sm:p-4 mb-5 text-sm bg-slate-950/50">
-          <p class="text-[11px] text-slate-400 mb-1 uppercase tracking-wide">
-            O que estudar a partir daqui
-          </p>
-          <ul
-            id="study-tips"
-            class="list-disc list-inside text-slate-200 space-y-1"
-          ></ul>
-        </div>
-
-        <!-- ENTRAR NO RANKING -->
-        <div class="mb-5 border border-emerald-500/30 bg-emerald-500/5 rounded-2xl p-3 sm:p-4">
-          <p class="text-[11px] text-emerald-300 mb-1 uppercase tracking-wide">
-            Entrar no Ranking 
-          </p>
-          <p class="text-xs text-slate-200 mb-3">
-            Coloque seu nome para aparecer no ranking do Teste da Bíblia
-            e desafiar seus amigos
-          </p>
-
-          <div class="flex flex-col sm:flex-row gap-2">
+        <!-- FEEDBACK DO RANKING (Auto-save) -->
+        <div class="mb-6 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
+          <div class="flex items-start gap-3">
+            <div class="text-2xl">✅</div>
+            <div class="flex-1">
+              <p class="text-sm font-semibold text-emerald-400 mb-1">
+                Resultado salvo no ranking!
+              </p>
+              <p class="text-xs text-slate-300 mb-2">
+                Você está participando como <span id="ranking-name" class="font-mono text-emerald-300"></span>
+              </p>
+              <div class="flex flex-wrap gap-2">
+                <a 
+                  href="ranking.html" 
+                  class="inline-flex items-center gap-1 text-xs text-emerald-400 hover:text-emerald-300 font-semibold"
+                >
+                  🏆 Ver sua posição no ranking →
+                </a>
             <button
-              type="button"
-              onclick="enviarResultadoParaRankingInput()"
-              id="send-ranking-btn"
-              class="sm:w-40 inline-flex items-center justify-center bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold text-xs sm:text-sm py-2 rounded-xl transition"
-            >
-              📤 Enviar resultado
+                  id="edit-name-btn"
+                  class="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-slate-300"
+                >
+                  ✏️ Mudar nome
+            </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- AÇÕES SECUNDÁRIAS -->
+        <div class="flex flex-col sm:flex-row gap-3">
+          <button
+            id="retry-btn"
+            class="flex-1 px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-slate-200 font-semibold text-sm hover:bg-slate-700 hover:border-emerald-500/50 transition"
+          >
+            🔄 Refazer o teste
+          </button>
+          <button
+            id="details-btn"
+            class="flex-1 px-4 py-3 rounded-xl border border-slate-700 text-slate-200 font-semibold text-sm hover:border-emerald-500/50 hover:text-emerald-300 transition"
+          >
+            📋 Ver detalhes completos
+          </button>
+        </div>
+      </section>
+
+      <!-- MODAL DE DETALHES -->
+      <div id="details-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-black/90 backdrop-blur-sm">
+        <div class="max-w-2xl w-full max-h-[90vh] overflow-y-auto bg-gradient-to-b from-slate-900 to-slate-950 rounded-2xl border-2 border-slate-700 p-6 shadow-2xl">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-xl font-bold text-emerald-400">📊 Detalhes do seu resultado</h3>
+            <button id="close-details-btn" class="text-2xl text-slate-400 hover:text-slate-200 transition">
+              ✕
             </button>
           </div>
 
-          <p
-            id="ranking-status"
-            class="mt-2 text-[11px] text-slate-400"
-          ></p>
-        </div>
+          <!-- Estatísticas -->
+          <div class="grid grid-cols-2 gap-3 mb-6">
+            <div class="p-4 rounded-xl bg-slate-800/50 border border-slate-700 text-center">
+              <div class="text-2xl font-bold text-emerald-400" id="modal-correct">0</div>
+              <div class="text-xs text-slate-400">Acertos</div>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-800/50 border border-slate-700 text-center">
+              <div class="text-2xl font-bold text-slate-300" id="modal-score">0</div>
+              <div class="text-xs text-slate-400">Pontuação</div>
+            </div>
+          </div>
 
-        <!-- Grupos de Igreja -->
-        <div class="mb-5 border border-blue-500/30 bg-blue-500/5 rounded-2xl p-3 sm:p-4">
-          <p class="text-[11px] text-blue-300 mb-1 uppercase tracking-wide flex items-center gap-2">
-            👥 Grupos de Igreja
-          </p>
-          <p class="text-xs text-slate-200 mb-3">
-            Crie ou entre em um grupo da sua igreja para competir com seus amigos
-          </p>
+          <!-- Diagnóstico -->
+          <div class="mb-6 p-4 rounded-xl bg-slate-800/50 border border-slate-700">
+            <p class="text-xs text-slate-400 mb-2 uppercase tracking-wide">Diagnóstico</p>
+            <p id="modal-diagnostic" class="text-sm text-slate-200 leading-relaxed"></p>
+          </div>
 
-          <div class="flex flex-col gap-2">
-            <div class="flex gap-2">
+          <!-- Sugestões de Estudo -->
+          <div class="mb-6 p-4 rounded-xl bg-slate-800/50 border border-slate-700">
+            <p class="text-xs text-slate-400 mb-3 uppercase tracking-wide">📖 Sugestões de estudo</p>
+            <ul id="modal-study-tips" class="list-disc list-inside text-sm text-slate-200 space-y-2"></ul>
+          </div>
+
+          <!-- Grupos de Igreja -->
+          <div class="p-4 rounded-xl bg-blue-500/10 border border-blue-500/30">
+            <p class="text-xs text-blue-300 mb-2 uppercase tracking-wide flex items-center gap-2">
+              👥 Grupos de Igreja
+            </p>
+            <p class="text-xs text-slate-300 mb-3">
+              Crie ou entre em um grupo da sua igreja para competir
+            </p>
+            
+            <div class="flex gap-2 mb-2">
               <input
                 type="text"
                 id="group-code-input"
@@ -508,47 +560,24 @@
               ➕ Criar Novo Grupo
             </button>
             
-            <p id="group-status" class="text-[11px] text-slate-400"></p>
+            <p id="group-status" class="mt-2 text-[11px] text-slate-400"></p>
             
-            <div id="current-group" class="hidden mt-2 p-3 rounded-lg bg-blue-500/10 border border-blue-500/30">
+            <div id="current-group" class="hidden mt-3 p-3 rounded-lg bg-blue-500/10 border border-blue-500/30">
               <p class="text-xs text-blue-300 font-semibold mb-1">Seu Grupo:</p>
               <p id="group-name-display" class="text-sm text-white font-mono"></p>
               <a href="ranking.html?group=GROUP_CODE" id="group-ranking-link" class="text-xs text-blue-400 hover:underline block mt-2">
-                🏆 Ver ranking do grupo
+                🏆 Ver ranking do grupo →
               </a>
             </div>
           </div>
         </div>
-
-        <!-- AÇÕES FINAIS -->
-        <div class="space-y-3">
-          <!-- Share button (Quick Win #6) -->
-          <button
-            id="share-whatsapp-btn"
-            class="w-full px-4 py-3 rounded-xl bg-gradient-to-r from-green-600 to-green-500 text-white font-semibold text-sm hover:from-green-500 hover:to-green-400 transition-all flex items-center justify-center gap-2 shadow-lg"
-          >
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-            </svg>
-            Compartilhar no WhatsApp
-          </button>
-
-          <div class="flex flex-col sm:flex-row gap-3">
-            <button
-              id="retry-btn"
-              class="flex-1 px-4 py-2 rounded-xl bg-emerald-500 text-slate-950 font-semibold text-sm hover:bg-emerald-400 transition"
-            >
-              🔄 Refazer o teste
-            </button>
-            <a
-              href="index.html"
-              class="flex-1 px-4 py-2 rounded-xl border border-slate-700 text-sm text-slate-200 hover:border-emerald-400 hover:text-emerald-300 text-center flex items-center justify-center"
-            >
-              ← Voltar para a página inicial
-            </a>
-          </div>
-        </div>
       </section>
+
+      <!-- Dados ocultos para modal (preenchidos pelo script) -->
+      <div class="hidden">
+        <p id="diagnostic-text"></p>
+        <ul id="study-tips"></ul>
+      </div>
 
       <!-- SCRIPTS -->
       <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>

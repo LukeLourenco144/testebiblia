@@ -1628,6 +1628,17 @@ function calculateResult() {
   
   const newAchievements = checkAchievements(testData);
   
+  // Calcular acertos para resumo
+  const correctAnswers = questionsAsked.filter((q, i) => answers[i] === q.answerIndex).length;
+  const correctCountEl = document.getElementById('correct-count');
+  if (correctCountEl) correctCountEl.textContent = correctAnswers;
+  
+  // Auto-save no ranking
+  autoSaveToRanking(score, levelName);
+  
+  // Popular modal de detalhes
+  populateDetailsModal(correctAnswers, score, levelName);
+  
   // mostra tela de resultado
   quizSection.classList.add("hidden");
   resultSection.classList.remove("hidden");
@@ -1867,14 +1878,26 @@ function setupThemeToggle() {
 }
 
 // ---------------------------
-// QUICK WINS: WhatsApp Share (Quick Win #6)
-// ---------------------------
+// WhatsApp Share com mensagem otimizada
 function setupWhatsAppShare() {
   const shareBtn = document.getElementById('share-whatsapp-btn');
   if (!shareBtn) return;
   
   shareBtn.addEventListener('click', () => {
-    const message = `🏆 Fiz ${score} pontos no Teste da Bíblia!\n\nNível: ${lastLevelName}\nVocê consegue me superar?\n\nFaça o teste: ${window.location.origin}/quiz.html\n\n📊 Ver ranking: ${window.location.origin}/ranking.html`;
+    // Calcular acertos para mensagem mais impactante
+    const correctAnswers = questionsAsked.filter((q, i) => answers[i] === q.answerIndex).length;
+    
+    const message = `🔥 EU ACERTEI ${correctAnswers}/20 NO TESTE DA BÍBLIA!
+
+⚡ Nível: ${lastLevelName} (${score} pontos)
+
+Será que você sabe mais que eu? 🤔
+
+🎯 Faça o teste (10min, grátis):
+${window.location.origin}/quiz.html
+
+🏆 Depois compare sua nota comigo no ranking!
+${window.location.origin}/ranking.html`;
     
     const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
@@ -1923,6 +1946,104 @@ function attemptProgressRestore() {
   };
   
   return true;
+}
+
+// Auto-save no Ranking (sem fricção)
+function autoSaveToRanking(scoreValue, levelName) {
+  // Verificar se já tem nome salvo
+  let userName = localStorage.getItem('user_name');
+  
+  // Se não tiver, gerar nome genérico
+  if (!userName) {
+    const randomId = Math.random().toString(36).substring(2, 7).toUpperCase();
+    userName = `Jogador #${randomId}`;
+    localStorage.setItem('user_name', userName);
+  }
+  
+  // Exibir nome no feedback
+  const rankingNameEl = document.getElementById('ranking-name');
+  if (rankingNameEl) rankingNameEl.textContent = userName;
+  
+  // Enviar para o ranking automaticamente (silenciosamente)
+  sendToRankingFinal(userName, scoreValue, levelName);
+}
+
+// Popular modal de detalhes
+function populateDetailsModal(correctAnswers, scoreValue, levelName) {
+  const modalCorrect = document.getElementById('modal-correct');
+  const modalScore = document.getElementById('modal-score');
+  const modalDiagnostic = document.getElementById('modal-diagnostic');
+  const modalStudyTips = document.getElementById('modal-study-tips');
+  
+  if (modalCorrect) modalCorrect.textContent = `${correctAnswers}/20`;
+  if (modalScore) modalScore.textContent = `${scoreValue}/1000`;
+  
+  // Copiar diagnóstico
+  const diagnosticText = document.getElementById('diagnostic-text');
+  if (modalDiagnostic && diagnosticText) {
+    modalDiagnostic.textContent = diagnosticText.textContent;
+  }
+  
+  // Copiar sugestões de estudo
+  const studyTips = document.getElementById('study-tips');
+  if (modalStudyTips && studyTips) {
+    modalStudyTips.innerHTML = studyTips.innerHTML;
+  }
+}
+
+// Modal de detalhes
+function setupDetailsModal() {
+  const detailsBtn = document.getElementById('details-btn');
+  const detailsModal = document.getElementById('details-modal');
+  const closeDetailsBtn = document.getElementById('close-details-btn');
+  
+  if (detailsBtn && detailsModal) {
+    detailsBtn.addEventListener('click', () => {
+      detailsModal.classList.remove('hidden');
+      detailsModal.classList.add('flex');
+    });
+  }
+  
+  if (closeDetailsBtn && detailsModal) {
+    closeDetailsBtn.addEventListener('click', () => {
+      detailsModal.classList.add('hidden');
+      detailsModal.classList.remove('flex');
+    });
+    
+    // Fechar ao clicar fora
+    detailsModal.addEventListener('click', (e) => {
+      if (e.target === detailsModal) {
+        detailsModal.classList.add('hidden');
+        detailsModal.classList.remove('flex');
+      }
+    });
+  }
+}
+
+// Editar nome no ranking
+function setupEditName() {
+  const editNameBtn = document.getElementById('edit-name-btn');
+  
+  if (editNameBtn) {
+    editNameBtn.addEventListener('click', () => {
+      const currentName = localStorage.getItem('user_name') || 'Jogador';
+      const newName = prompt('Como você quer aparecer no ranking?', currentName);
+      
+      if (newName && newName.trim()) {
+        const finalName = newName.trim();
+        localStorage.setItem('user_name', finalName);
+        
+        // Atualizar display
+        const rankingNameEl = document.getElementById('ranking-name');
+        if (rankingNameEl) rankingNameEl.textContent = finalName;
+        
+        // Re-enviar ao ranking com novo nome
+        sendToRankingFinal(finalName, score, lastLevelName);
+        
+        alert(`✅ Nome atualizado para: ${finalName}`);
+      }
+    });
+  }
 }
 
 // Sistema de Grupos de Igreja
@@ -1996,6 +2117,8 @@ setupThemeToggle();
 setupSoundToggle();
 setupWhatsAppShare();
 setupGroupSystem();
+setupDetailsModal();
+setupEditName();
 
 // Try to restore progress
 const progressRestored = attemptProgressRestore();
