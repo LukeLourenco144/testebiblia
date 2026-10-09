@@ -817,6 +817,9 @@ function saveProgress() {
     currentIndex,
     score,
     currentDifficultyIndex,
+    quizAttemptId,
+    quizStartTracked,
+    testStartTime,
     timestamp: Date.now()
   };
   
@@ -916,6 +919,36 @@ let lastLevelName = "";
 
 // Melhoria #5: Rastrear tempo de início do teste
 let testStartTime = Date.now();
+let quizAttemptId = null;
+let quizStartTracked = false;
+let quizCompleteTracked = false;
+
+function trackQuizStart() {
+  if (quizStartTracked || typeof window.gtag !== 'function') return;
+  quizAttemptId = quizAttemptId || crypto.randomUUID();
+  window.gtag('event', 'quiz_start', {
+    quiz_id: 'biblia_adaptativo',
+    quiz_attempt_id: quizAttemptId,
+    question_count: QUESTIONS_PER_TEST,
+    transport_type: 'beacon'
+  });
+  quizStartTracked = true;
+}
+
+function trackQuizComplete(levelName) {
+  if (quizCompleteTracked || typeof window.gtag !== 'function') return;
+  window.gtag('event', 'quiz_complete', {
+    quiz_id: 'biblia_adaptativo',
+    quiz_attempt_id: quizAttemptId,
+    question_count: questionsAsked.length,
+    correct_answers: questionsAsked.filter((q, i) => answers[i] === q.answerIndex).length,
+    score,
+    level: levelName,
+    duration_seconds: Math.max(0, Math.round((Date.now() - testStartTime) / 1000)),
+    transport_type: 'beacon'
+  });
+  quizCompleteTracked = true;
+}
 
 // ---------------------------
 // Funções de seleção de perguntas
@@ -932,6 +965,10 @@ function resetRemaining() {
   currentIndex = 0;
   score = 0;
   currentDifficultyIndex = 1;
+  testStartTime = Date.now();
+  quizAttemptId = null;
+  quizStartTracked = false;
+  quizCompleteTracked = false;
 }
 
 function pickNextQuestion() {
@@ -1090,7 +1127,7 @@ function updateScorePreview() {
   answers.forEach((ans, idx) => {
     if (ans === questionsAsked[idx].answerIndex) correct++;
   });
-  scorePreview.textContent = `Respostas corretas: ${correct}`;
+  if (scorePreview) scorePreview.textContent = `Respostas corretas: ${correct}`;
 }
 
 // Mostrar explicação após resposta
@@ -1223,9 +1260,6 @@ nextBtn.addEventListener("click", async () => {
     currentDifficultyIndex = Math.max(currentDifficultyIndex - 1, 0);
   }
 
-  // Salvar progresso
-  saveProgress();
-
   if (currentIndex === QUESTIONS_PER_TEST - 1) {
     clearProgress();
     calculateResult();
@@ -1237,6 +1271,9 @@ nextBtn.addEventListener("click", async () => {
   if (currentIndex >= questionsAsked.length) {
     pickNextQuestion();
   }
+
+  // Persist the displayed question, including the analytics attempt identity.
+  saveProgress();
 
   nextBtn.disabled = false;
   renderQuestion();
@@ -1492,6 +1529,8 @@ function calculateResult() {
 
   // guarda nível pra poder enviar pro ranking
   lastLevelName = levelName;
+  // Queue completion before the automatic ranking request can navigate away.
+  trackQuizComplete(levelName);
 
   // Atualiza elementos principais
   finalScoreEl.textContent = `${score} / 1000`;
@@ -1937,6 +1976,9 @@ function attemptProgressRestore() {
   currentIndex = savedProgress.currentIndex;
   score = savedProgress.score || 0;
   currentDifficultyIndex = savedProgress.currentDifficultyIndex || 1;
+  quizAttemptId = savedProgress.quizAttemptId || null;
+  quizStartTracked = savedProgress.quizStartTracked === true;
+  testStartTime = savedProgress.testStartTime || savedProgress.timestamp || Date.now();
   
   // Rebuild remaining questions pool
   remainingByDifficulty = {
@@ -2129,6 +2171,8 @@ if (!progressRestored) {
 }
 
 renderQuestion();
+trackQuizStart();
+saveProgress();
 
 // Botão de refazer teste
 retryBtn.addEventListener("click", () => {
@@ -2141,4 +2185,6 @@ retryBtn.addEventListener("click", () => {
   quizSection.classList.remove("hidden");
   resultSection.classList.add("hidden");
   renderQuestion();
+  trackQuizStart();
+  saveProgress();
 });
