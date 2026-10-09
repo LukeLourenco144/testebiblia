@@ -2184,6 +2184,7 @@ retryBtn.addEventListener("click", () => {
   testStartTime = Date.now();
   quizSection.classList.remove("hidden");
   resultSection.classList.add("hidden");
+  nextBtn.disabled = false;
   renderQuestion();
   trackQuizStart();
   saveProgress();

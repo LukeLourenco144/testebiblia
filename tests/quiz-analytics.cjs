@@ -111,6 +111,8 @@ const base = process.env.TEST_BASE_URL || 'http://127.0.0.1:8000';
     assert.notEqual(retryStart.quiz_attempt_id, firstStart.quiz_attempt_id);
     assert.match(await page.locator('#progress-text').textContent(), /Pergunta 1 de 20/);
     assert.equal((await events('quiz_complete')).length, 1);
+    assert.equal(await page.locator('#next-btn').isEnabled(), true, 'retry must enable navigation');
+    await answer(1);
     page.removeAllListeners('dialog');
     page.on('dialog', dialog => dialog.dismiss());
     await page.reload({ waitUntil: 'networkidle' });
